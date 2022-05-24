@@ -36,6 +36,12 @@ const commonFunctions = {
 
     return regExp.test(str);
   },
+  base64encode: (str) => {
+    return Buffer.from(str).toString("base64");
+  },
+  base64decode: (str) => {
+    return Buffer.from(str, "base64").toString("ascii");
+  },
 };
 
 module.exports = commonFunctions;

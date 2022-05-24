@@ -9,6 +9,8 @@ const error_handler = (err, req, res, next) => {
     error_data.code = err.status;
     error_data.error_message = err.message;
   }
+      console.log(err);
+  
  return res.status(error_data.code).json(error_data);
 };
 

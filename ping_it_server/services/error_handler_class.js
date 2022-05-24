@@ -6,11 +6,11 @@ class ErrorHandlerClass extends Error {
     this.message = message;
   }
 
-  static custom(message, code) {
+  static custom(message, code=400) {
     return new ErrorHandlerClass(code, message);
   }
   static alreadyExist(message = "this email is already used") {
-    return new ErrorHandlerClass(409, message);
+    return new ErrorHandlerClass(406, message);
   }
   static notExist(message = "email not found") {
     return new ErrorHandlerClass(409, message);
@@ -34,5 +34,4 @@ class ErrorHandlerClass extends Error {
     return new ErrorHandlerClass(409, message);
   }
 }
-
 module.exports = ErrorHandlerClass;
