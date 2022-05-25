@@ -42,6 +42,13 @@ const commonFunctions = {
   base64decode: (str) => {
     return Buffer.from(str, "base64").toString("ascii");
   },
+
+  getCurrentTime: () => {
+    var today = new Date();
+    var time =
+      today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    return time;
+  },
 };
 
 module.exports = commonFunctions;

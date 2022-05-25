@@ -6,8 +6,9 @@ const User = require("../models/user_model");
 
 const controller = {
   signUp: async (req, res, next) => {
-    let { otp_token, email, username, password } = req.body;
+    let { otp_token, otp, email, username, password } = req.body;
 
+    //validate otp
     let verfied = JwtService.verify({
       token: otp_token,
       secret: commonFunctions.base64encode(email),
@@ -16,6 +17,9 @@ const controller = {
     if (!verfied) {
       return next(ErrorHandlerClass.custom("OTP token is invalid", 401));
     }
+    if (verfied.otp != otp) {
+      return next(ErrorHandlerClass.custom("OTP is invalid", 401));
+    }
 
     //hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,21 +27,32 @@ const controller = {
       email,
       username,
       password: hashedPassword,
-      refreshTokenId: email,
     });
-    const result = await user.save();
-    // let secret = commonFunctions.base64encode(email);
-    // //token
-    // accessToken = JwtService.sign({
-    //   payload: { _id: result._id, email: result.email },
-    //   secret: secret,
-    // });
-    // refreshToken = JwtService.refreshSign({
-    //   _id: result._id,
-    //   email: result.email,
-    // });
+    try {
+      const result = await user.save();
 
-    return res.status(200).json(user);
+      let secret = commonFunctions.base64encode(hashedPassword);
+      //token
+      accessToken = JwtService.sign({
+        payload: { _id: result._id, email: result.email },
+        secret: secret,
+        expiry: 30,
+      });
+      refreshToken = JwtService.refreshSign({
+        payload: {
+          _id: result._id,
+          email: result.email,
+        },
+      });
+
+      res.status(200).json({
+        accessToken,
+        refreshToken,
+        user,
+      });
+    } catch (error) {
+      return next(ErrorHandlerClass.custom(error, 400));
+    }
   },
 };
 

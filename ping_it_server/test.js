@@ -80,7 +80,7 @@
 //     console.log(en);
 
 // const { populate } = require("./models/user_model");
-// const JwtService = require("./services/jwt_service");
+const JwtService = require("./services/jwt_service");
 
 // async function pop() {
 //   var token = JwtService.sign({
@@ -103,3 +103,10 @@
 // pop();
 // let otp = Math.floor(100000 + Math.random() * 900000);
     // console.log(otp);
+    // var today = new Date();   
+    // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    //     console.log(time);
+      var token = JwtService.sign({
+    payload: { message: "hello world" },
+  });
+  console.log(token);
