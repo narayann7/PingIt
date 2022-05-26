@@ -110,7 +110,7 @@ const JwtService = require("./services/jwt_service");
   //   payload: { message: "hello world" },
   // });
   // console.log(token);
-require("dotenv").config();
+// require("dotenv").config();
 
-      console.log(process.env.googleClientID);
+//       console.log(process.env.googleClientID);
   

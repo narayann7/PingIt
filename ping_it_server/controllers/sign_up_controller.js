@@ -2,6 +2,7 @@ const commonFunctions = require("../services/common_functions");
 const ErrorHandlerClass = require("../services/error_handler_class");
 const JwtService = require("../services/jwt_service");
 const bcrypt = require("bcrypt");
+const common = require("./common");
 const User = require("../models/user_model");
 
 const controller = {
@@ -27,28 +28,21 @@ const controller = {
       email,
       username,
       password: hashedPassword,
+      authType: "EMAIL",
     });
     try {
-      const result = await user.save();
+      const userDetails = await user.save();
 
-      let secret = commonFunctions.base64encode(hashedPassword);
-      //token
-      accessToken = JwtService.sign({
-        payload: { _id: result._id, email: result.email },
-        secret: secret,
-        expiry: 30,
-      });
-      refreshToken = JwtService.refreshSign({
-        payload: {
-          _id: result._id,
-          email: result.email,
-        },
-      });
+      const result =  common.setUserInDb(userDetails);
+      if (result instanceof ErrorHandlerClass) {
+        return next(result);
+      }
+      const { accessToken, refreshToken } = result;
 
       res.status(200).json({
         accessToken,
         refreshToken,
-        user,
+    
       });
     } catch (error) {
       return next(ErrorHandlerClass.custom(error, 400));

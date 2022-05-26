@@ -48,7 +48,7 @@ const defaultScope = [
   async function getGoogleAccountFromCode(code) {
     const auth = createConnection();
     const { tokens } = await auth.getToken(code);
-    console.log(auth.credentials);
+    // console.log(auth.credentials);
     var getUserUrl =
       "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=";
     getUserUrl += tokens.access_token;
