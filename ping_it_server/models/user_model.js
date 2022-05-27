@@ -8,6 +8,7 @@ const userSchema = new Schema(
     email: { type: String, require: true, unique: true },
     password: { type: String,  },
     displayPictureUrl: { type: String },
+    authType: { type: String },
     // refreshToken: { type: String, require: true, unique: true },
   },
   { timestamps: true }

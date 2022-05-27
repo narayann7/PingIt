@@ -33,16 +33,14 @@ const controller = {
     try {
       const userDetails = await user.save();
 
-      const result =  common.setUserInDb(userDetails);
-      if (result instanceof ErrorHandlerClass) {
-        return next(result);
-      }
+      const result = common.setUserInDb(userDetails);
+
       const { accessToken, refreshToken } = result;
 
       res.status(200).json({
         accessToken,
         refreshToken,
-    
+        user,
       });
     } catch (error) {
       return next(ErrorHandlerClass.custom(error, 400));
