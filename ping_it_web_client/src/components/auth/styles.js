@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import background from "../../assets/images/pingit_bg.png";
-import { Card, Box } from "@mui/material";
+import { Card, Box,Button } from "@mui/material";
 const BackgroundBox = styled(Box)({
   height: "100vh",
   width: "100vw",
@@ -21,6 +21,8 @@ const CenterCard = styled(Card)(({ theme }) => ({
   borderRadius: "12px",
   backgroundColor: theme.palette.background.paper,
 }));
+
+
 
 const styles = {
   BackgroundBox,
