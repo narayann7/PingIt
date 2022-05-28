@@ -1,0 +1,13 @@
+html {
+    box-sizing: border-box;
+  }
+  
+  html, body, #root {
+    padding: 0px !important;;
+    margin: 0px !important;;
+  
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
