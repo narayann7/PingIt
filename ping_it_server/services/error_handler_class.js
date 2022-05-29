@@ -12,7 +12,7 @@ class ErrorHandlerClass extends Error {
   static alreadyExist(message = "this email is already used") {
     return new ErrorHandlerClass(406, message);
   }
-  static notExist(message = "email not found") {
+  static notExist(message = "email not found. please sign up") {
     return new ErrorHandlerClass(409, message);
   }
   static userNotExist(message = "user not exist") {

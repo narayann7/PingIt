@@ -11,17 +11,26 @@ router.get("/google", controllers.loginWithGoogle);
 router.get("/google/callback", controllers.loginWithGoogleCallback);
 
 //---------------------- TESTING ------------------------
-router.get("/test", isAuthenticated, (req, res) => {
-  if (req.User) {
-    res.json({
-      message: "success",
-      user: req.User,
-    });
-  } else {
-    res.json({
-      message: "fail",
-    });
-  }
+router.get("/test", (req, res) => {
+
+  if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+ }
+ 
+ localStorage.setItem('myFirstKey', 'myFirstValue');
+ console.log(localStorage.getItem('myFirstKey'));
+  res.send("hello");
+  // if (req.User) {
+  //   res.json({
+  //     message: "success",
+  //     user: req.User,
+  //   });
+  // } else {
+  //   res.json({
+  //     message: "fail",
+  //   });
+  // }
 });
 
 module.exports = router;

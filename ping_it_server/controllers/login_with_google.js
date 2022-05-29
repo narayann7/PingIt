@@ -5,7 +5,7 @@ const ErrorHandlerClass = require("../services/error_handler_class");
 const JwtService = require("../services/jwt_service");
 const bcrypt = require("bcrypt");
 const common = require("./common");
-
+require("dotenv").config();
 function sendData(userDetails, res) {
   const result = common.setUserInDb(userDetails);
   const { accessToken, refreshToken } = result;
@@ -55,9 +55,9 @@ const controller = {
         respond = sendData(userDetails, res);
       }
 
-      res.status(200).json({
-        respond,
-      });
+      res.redirect(
+        `${process.env.APP_BASE_URL}/login/?user=${respond.refreshToken}`
+      );
     } catch (error) {
       next(error);
     }
