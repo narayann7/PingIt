@@ -16,3 +16,15 @@ body,
 *:after {
   box-sizing: inherit;
 }
+just-center-c{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+just-center-r{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}

@@ -1,6 +1,6 @@
 import { styled } from "@mui/material/styles";
 import background from "../../assets/images/pingit_bg.png";
-import { Card, Box,Button } from "@mui/material";
+import { Card, Box } from "@mui/material";
 const BackgroundBox = styled(Box)({
   height: "100vh",
   width: "100vw",
@@ -9,6 +9,8 @@ const BackgroundBox = styled(Box)({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  backgroundPosition: "center",
+
 });
 
 const CenterCard = styled(Card)(({ theme }) => ({
@@ -17,12 +19,11 @@ const CenterCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  
+
   borderRadius: "12px",
   backgroundColor: theme.palette.background.paper,
+
 }));
-
-
 
 const styles = {
   BackgroundBox,
