@@ -19,6 +19,20 @@ app.use(express.json());
 app.use("/api/auth", auth_routers);
 app.use(error_handler);
 
+//--------------- TESTING -----------------
+app.post("/test", (req, res) => {
+  if(req.body){
+    res.json({
+      message: "success",
+      user: req.body,
+    });
+  }
+  else{
+    res.json({
+      message: "fail",
+    });
+  }
+})
 Mongoose.connect(process.env.MONGODB_URL)
   .then(() => console.log("connected to mongo db.."))
   .catch((err) => console.log("error", err));

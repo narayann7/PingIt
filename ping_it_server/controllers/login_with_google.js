@@ -56,7 +56,7 @@ const controller = {
       }
 
       res.redirect(
-        `${process.env.APP_BASE_URL}/login/?user=${respond.refreshToken}`
+        `${process.env.APP_BASE_URL}/login?user=${respond.refreshToken}`
       );
     } catch (error) {
       next(error);
