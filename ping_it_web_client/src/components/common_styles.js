@@ -21,7 +21,7 @@ const MyTextField = styled(TextField)(({ theme }) => ({
 
 const MyButton = styled(Button)(({ theme }) => ({
   height: "7vh",
-  width: "25vw",
+  width: "23vw",
   marginTop: "2.5vh",
   borderRadius: "10px",
   fontSize: "2.5vh",
@@ -31,7 +31,7 @@ const MyButton = styled(Button)(({ theme }) => ({
 const MyTextFieldBg = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   height: "8vh",
-  width: "25vw",
+  width: "23vw",
   paddingRight: "15px",
   paddingLeft: "15px",
   marginTop: "1.8vh",

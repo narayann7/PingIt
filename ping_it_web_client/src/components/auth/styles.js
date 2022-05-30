@@ -14,7 +14,7 @@ const BackgroundBox = styled(Box)({
 });
 
 const CenterCard = styled(Card)(({ theme }) => ({
-  width: "35vw",
+  width: "30vw",
   height: "65vh",
   display: "flex",
   flexDirection: "column",

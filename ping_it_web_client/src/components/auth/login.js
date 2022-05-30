@@ -26,31 +26,42 @@ function Login() {
   const [alertType, setAlertType] = useState("success");
 
   useEffect(() => {
-    let refreshtoken = searchParams.get("user");
-    if (refreshtoken) {
-      setisLoading(true);
-      api
-        .post(Urls.getAccessTokenUrl, { refreshtoken })
-        .then((response) => {
-          console.log(response.data);
+    // //check if user is already logged in by google
+    // let refreshtoken = searchParams.get("user");
 
-          if (response.status === 200) {
-            setisLoading(false);
-            setAlertType("success");
-            setalertMessage("Login Successful");
-            setOpenAlert(true);
-            console.log(response.data);
-            localStorage.setItem("refreshToken", response.data.refreshToken);
-            window.open(`${Urls.clientBaseUrl}/home`, "_self");
-          }
-        })
-        .catch((error) => {
-          setisLoading(false);
-          setOpenAlert(true);
-          setAlertType("error");
-          setalertMessage("Login Failed. try again");
-        });
-    }
+    // if (!refreshtoken) {
+    //   //check if user has refresh token in local storage
+    //   let temp = localStorage.getItem("refreshToken");
+
+    //   if (temp) {
+    //     refreshtoken = temp;
+    //   }
+    // }
+
+    // if (refreshtoken) {
+    //   setisLoading(true);
+    //   api
+    //     .post(Urls.getAccessTokenUrl, { refreshtoken })
+    //     .then((response) => {
+    //       console.log(response.data);
+
+    //       if (response.status === 200) {
+    //         setisLoading(false);
+    //         setAlertType("success");
+    //         setalertMessage("Login Successful");
+    //         setOpenAlert(true);
+    //         console.log(response.data);
+    //         localStorage.setItem("refreshToken", response.data.refreshToken);
+    //         window.open(`${Urls.clientBaseUrl}/home`, "_self");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       setisLoading(false);
+    //       setOpenAlert(true);
+    //       setAlertType("error");
+    //       setalertMessage("Login Failed. try again");
+    //     });
+    // }
   }, [searchParams]);
 
   const toggleVisibility = () => {
@@ -66,7 +77,14 @@ function Login() {
     window.open(`${Urls.severLoginWithGoogleUrl}`, "_self");
   };
 
-  const loginOnClick = async () => {};
+  const loginOnClick = async () => {
+    let token = localStorage.getItem("refreshToken");
+    if (token) {
+      console.log("token is present");
+    } else {
+      console.log("token is not present");
+    }
+  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
