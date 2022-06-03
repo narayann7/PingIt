@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
 import styles from "./styles";
 import {
@@ -9,8 +9,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-import { HiOutlineMail } from "react-icons/hi";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { HiOutlineMail, HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
 import api from "../../services/axios_api";
 import Urls from "../../services/urls";
@@ -148,7 +147,10 @@ function Login() {
               onChange={handleChangeEmail}
               value={email}
             ></MyTextField>
-            <HiOutlineMail size={25} style={iconProp}></HiOutlineMail>
+
+            <Box>
+              <HiOutlineMail size={25} style={iconProp}></HiOutlineMail>
+            </Box>
           </MyTextFieldBg>
           <MyTextFieldBg>
             <MyTextField
@@ -159,16 +161,13 @@ function Login() {
               placeholder="Enter your Password"
             ></MyTextField>
 
-            <div onClick={toggleVisibility}>
+            <Box onClick={toggleVisibility}>
               {!isVisibile ? (
-                <AiOutlineEye size={25} style={iconProp}></AiOutlineEye>
+                <HiOutlineEye size={25} style={iconProp}></HiOutlineEye>
               ) : (
-                <AiOutlineEyeInvisible
-                  size={25}
-                  style={iconProp}
-                ></AiOutlineEyeInvisible>
+                <HiOutlineEyeOff size={25} style={iconProp}></HiOutlineEyeOff>
               )}
-            </div>
+            </Box>
           </MyTextFieldBg>
           <MyButton id="login" onClick={loginOnClick} variant="contained">
             {loginLoading ? (
@@ -195,15 +194,22 @@ function Login() {
             }}
           >
             <Text>Don't have an account? </Text>
-            <Text
+            <Link
+              to="/signup"
               style={{
-                color: "#FFC107",
-                cursor: "pointer",
-                marginLeft: "5px",
+                textDecoration: "none",
               }}
             >
-              Sign up
-            </Text>
+              <Text
+                style={{
+                  color: "#FFC107",
+                  cursor: "pointer",
+                  marginLeft: "5px",
+                }}
+              >
+                Sign up
+              </Text>
+            </Link>
           </div>
         </form>
       </CenterCard>

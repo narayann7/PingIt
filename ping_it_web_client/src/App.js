@@ -12,6 +12,7 @@ import api from "./services/axios_api";
 import theme from "./utility/theme";
 import Urls from "./services/urls";
 import "./App.css";
+import Signup from "./components/auth/signup";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +47,10 @@ function App() {
           <Route
             path="login"
             element={isAuth ? <Navigate to={"/home"} /> : <Login />}
+          />
+          <Route
+            path="signup"
+            element={isAuth ? <Navigate to={"/home"} /> : <Signup />}
           />
           <Route element={<ProtectedRoutes />}>
             <Route path="home" element={<Home />} />

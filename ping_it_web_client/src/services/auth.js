@@ -13,6 +13,8 @@ export default class Auth {
     localStorage.setItem("refreshToken", refreshToken);
   }
 
+  static async signup({ email, password, name }) {}
+
   static async login({ email, password }) {
     try {
       var result = await api.post(Urls.serverLoginUrl, { email, password });
