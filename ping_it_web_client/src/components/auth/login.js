@@ -1,5 +1,5 @@
-import { React, useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { React, useState, useEffect, useContext } from "react";
+import { Navigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
 import styles from "./styles";
 import {
@@ -14,6 +14,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import api from "../../services/axios_api";
 import Urls from "../../services/urls";
+import { RootContext } from "../../context_api/root_context";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -24,45 +25,52 @@ function Login() {
   const [openAlert, setOpenAlert] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [alertType, setAlertType] = useState("success");
+  const { isAuthenticated, setIsAuthenticated } = useContext(RootContext);
 
   useEffect(() => {
-    // //check if user is already logged in by google
-    // let refreshtoken = searchParams.get("user");
+    //check if user is already logged in by google
+    let refreshtoken = searchParams.get("user");
 
-    // if (!refreshtoken) {
-    //   //check if user has refresh token in local storage
-    //   let temp = localStorage.getItem("refreshToken");
+    if (!refreshtoken) {
+      //check if user has refresh token in local storage
+      let temp = localStorage.getItem("refreshToken");
 
-    //   if (temp) {
-    //     refreshtoken = temp;
-    //   }
+      if (temp) {
+        refreshtoken = temp;
+      }
+    }
+
+    if (refreshtoken) {
+      setisLoading(true);
+      api
+        .post(Urls.getAccessTokenUrl, { refreshtoken })
+        .then((response) => {
+          console.log(response.data);
+
+          if (response.status === 200) {
+            setisLoading(false);
+            setAlertType("success");
+            setalertMessage("Login Successful");
+            setOpenAlert(true);
+            console.log(response.data);
+            localStorage.setItem("refreshToken", response.data.refreshToken);
+            setIsAuthenticated(true);
+          }
+        })
+        .catch((error) => {
+          setisLoading(false);
+          setOpenAlert(true);
+          setAlertType("error");
+          setalertMessage("Login Failed. try again");
+        });
+    }
+
+    // if (isAuthenticated) {
+    //   return <Redirect to="/home" />;
     // }
 
-    // if (refreshtoken) {
-    //   setisLoading(true);
-    //   api
-    //     .post(Urls.getAccessTokenUrl, { refreshtoken })
-    //     .then((response) => {
-    //       console.log(response.data);
-
-    //       if (response.status === 200) {
-    //         setisLoading(false);
-    //         setAlertType("success");
-    //         setalertMessage("Login Successful");
-    //         setOpenAlert(true);
-    //         console.log(response.data);
-    //         localStorage.setItem("refreshToken", response.data.refreshToken);
-    //         window.open(`${Urls.clientBaseUrl}/home`, "_self");
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       setisLoading(false);
-    //       setOpenAlert(true);
-    //       setAlertType("error");
-    //       setalertMessage("Login Failed. try again");
-    //     });
-    // }
-  }, [searchParams]);
+    setIsAuthenticated(false);
+  }, [searchParams, setIsAuthenticated]);
 
   const toggleVisibility = () => {
     setIsVisibile(!isVisibile);

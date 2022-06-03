@@ -19,7 +19,6 @@ const CenterCard = styled(Card)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-
   borderRadius: "12px",
   backgroundColor: theme.palette.background.paper,
 

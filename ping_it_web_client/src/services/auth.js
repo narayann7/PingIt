@@ -23,7 +23,7 @@ class Auth {
     }
     //callback
   }
-  getRefreshToken() {
+ static getRefreshToken() {
     let refreshtoken = localStorage.getItem("refreshToken");
     if (refreshtoken) {
       return refreshtoken;
@@ -33,4 +33,4 @@ class Auth {
   }
 }
 
-export default new Auth();
+export default  Auth();

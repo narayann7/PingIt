@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { React, useState, useContext } from "react";
-import RootContext from "../context_api/root_context";
+import {RootContext} from "../context_api/root_context";
 
 function TestComp() {
   //   const hello = () => {

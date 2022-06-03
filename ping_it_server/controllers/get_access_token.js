@@ -7,6 +7,7 @@ const getAccessTokenController = {
   async getAccessToken(req, res, next) {
     let accessToken;
     let refreshToken = req.body.refreshtoken;
+    console.log(refreshToken);
 
     try {
       let result = JwtService.refreshVerify({

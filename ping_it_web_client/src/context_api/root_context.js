@@ -1,5 +1,16 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 
-const RootContext = createContext();
+export const RootContext = createContext();
 
-export default RootContext;
+const RootContextProvider = (props) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const value = {
+    isAuthenticated,
+    setIsAuthenticated,
+  };
+  return (
+    <RootContext.Provider value={value}>{props.children}</RootContext.Provider>
+  );
+};
+
+export default RootContextProvider;
