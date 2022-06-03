@@ -1,5 +1,5 @@
-import { React, useState, useEffect, useContext } from "react";
-import { Navigate, useSearchParams } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
 import styles from "./styles";
 import {
@@ -14,8 +14,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import api from "../../services/axios_api";
 import Urls from "../../services/urls";
-import { RootContext } from "../../context_api/root_context";
-
+import Auth from "../../services/auth";
 function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -25,7 +24,7 @@ function Login() {
   const [openAlert, setOpenAlert] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [alertType, setAlertType] = useState("success");
-  const { isAuthenticated, setIsAuthenticated } = useContext(RootContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     //check if user is already logged in by google
@@ -54,7 +53,7 @@ function Login() {
             setOpenAlert(true);
             console.log(response.data);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-            setIsAuthenticated(true);
+            // navigate("/home", { replace: true });
           }
         })
         .catch((error) => {
@@ -68,9 +67,7 @@ function Login() {
     // if (isAuthenticated) {
     //   return <Redirect to="/home" />;
     // }
-
-    setIsAuthenticated(false);
-  }, [searchParams, setIsAuthenticated]);
+  }, [navigate, searchParams]);
 
   const toggleVisibility = () => {
     setIsVisibile(!isVisibile);
@@ -86,12 +83,28 @@ function Login() {
   };
 
   const loginOnClick = async () => {
-    let token = localStorage.getItem("refreshToken");
-    if (token) {
-      console.log("token is present");
-    } else {
-      console.log("token is not present");
-    }
+    try {
+      var refreshToken = Auth.getRefreshToken();
+
+      api
+        .post(Urls.getAccessTokenUrl, { refreshToken })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {});
+
+      // console.log(result.data);
+    } catch (error) {}
+
+    // if (refreshtoken) {
+    //   console.log(refreshtoken);
+
+    //   Auth.getAccessToken(refreshtoken)
+    //     .then((response) => {
+    //       console.log(response);
+    //     })
+    //     .catch((error) => {});
+    // }
   };
 
   const handleClose = (event, reason) => {
@@ -147,7 +160,13 @@ function Login() {
               )}
             </div>
           </MyTextFieldBg>
-          <MyButton id="login" onClick={loginOnClick} variant="contained">
+          <MyButton
+            id="login"
+            onClick={async () => {
+              loginOnClick();
+            }}
+            variant="contained"
+          >
             Login
           </MyButton>
           <MyButton

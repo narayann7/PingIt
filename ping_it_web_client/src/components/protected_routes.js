@@ -1,18 +1,20 @@
 import React from "react";
-import { Route, Navigate, useLocation,Redirect } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
-import { RootContext } from "../context_api/root_context";
+import { Navigate, useLocation, Outlet } from "react-router-dom";
+import Auth from "../services/auth";
 
-function ProtectedRoutes({ children }) {
+function ProtectedRoutes() {
   const location = useLocation();
-  const { isAuthenticated } = useContext(RootContext);
-  console.log("pto", isAuthenticated);
+  const token = Auth.getRefreshToken();
 
-  // if (!isAuthenticated) {
-  //   return <Redirect to="/test" />;
-  // }
-
-  return children;
+  return token ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} replace />
+  );
 }
+
+export const Layout = () => {
+  return <Outlet />;
+};
 
 export default ProtectedRoutes;

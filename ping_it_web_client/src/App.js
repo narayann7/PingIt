@@ -1,53 +1,52 @@
-import { React, useState, useEffect, useContext } from "react";
+import { React, useState, useEffect } from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { CircularProgress, Typography, Backdrop } from "@mui/material";
+import ProtectedRoutes, { Layout } from "./components/protected_routes";
+import Auth from "./services/auth";
+import TestComp from "./components/test_component";
 import Login from "./components/auth/login";
 import Home from "./components/home/home";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "./utility/theme";
-import { Routes, Route, Navigate, Link, Outlet } from "react-router-dom";
-import "./App.css";
-import TestComp from "./components/test_component";
-import { RootContext } from "./context_api/root_context";
-import ProtectedRoutes from "./components/protected_routes";
-import { CircularProgress } from "@mui/material";
-import { Typography } from "@mui/material";
-import { Backdrop } from "@mui/material";
+import Error from "./components/error_component";
 import api from "./services/axios_api";
+import theme from "./utility/theme";
 import Urls from "./services/urls";
+import "./App.css";
 
 function App() {
-  const { isAuthenticated, setIsAuthenticated } = useContext(RootContext);
   const [isLoading, setIsLoading] = useState(false);
+  let refreshtoken = Auth.getRefreshToken();
+  const [isAuth, setisAuth] = useState(refreshtoken ? true : false);
   useEffect(() => {
-    let refreshtoken = localStorage.getItem("refreshToken");
-    console.log(isAuthenticated);
-
     setIsLoading(true);
     if (refreshtoken) {
       api
         .post(Urls.getAccessTokenUrl, { refreshtoken })
         .then((response) => {
           console.log(response.data);
+
           if (response.status === 200) {
             console.log(response.data);
-            setIsAuthenticated(true);
           }
         })
         .catch((error) => {
           console.log(error);
-          setIsAuthenticated(false);
+          // deleteRefreshToken();
+          setisAuth(false);
         });
-    } else {
-      setIsAuthenticated(false);
     }
     setIsLoading(false);
-  }, [isAuthenticated, setIsAuthenticated]);
+  }, [refreshtoken]);
 
-  return (
+  return !isLoading ? (
     <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="login" element={<Login />} />
-
+          <Route path="/" element={<Navigate to={"/login"} />} />
+          <Route
+            path="login"
+            element={isAuth ? <Navigate to={"/home"} /> : <Login />}
+          />
           <Route element={<ProtectedRoutes />}>
             <Route path="home" element={<Home />} />
             <Route path="test" element={<TestComp />} />
@@ -56,86 +55,23 @@ function App() {
         </Route>
       </Routes>
     </ThemeProvider>
-  );
-
-  // isLoading ? (
-  //   <Backdrop
-  //     sx={{
-  //       color: "#fff",
-  //       backgroundColor: "#000000",
-  //       display: "flex",
-  //       justifyContent: "center",
-  //       alignItems: "center",
-  //       flexDirection: "column",
-  //       zIndex: (theme) => theme.zIndex.drawer + 1,
-  //     }}
-  //     open={true}
-  //   >
-  //     <CircularProgress color="inherit" />
-  //     <Typography paddingTop={5}>Please wait..</Typography>
-  //   </Backdrop>
-  // ) : (
-  //   <ThemeProvider theme={theme}>
-  //     <Routes>
-  //       <Route
-  //         path="/"
-  //         element={
-  //           !isAuthenticated ? (
-  //             <Navigate to="/login" />
-  //           ) : (
-  //             <Navigate to="/home" />
-  //           )
-  //         }
-  //       />
-  //       <Route path="/login" element={<Login />} />
-  //       <Route
-  //         path="/home"
-  //         element={
-  //           <ProtectedRoutes>
-  //             <Home />
-  //           </ProtectedRoutes>
-  //         }
-  //       />
-  //       <Route path="/test" element={<TestComp />} />
-  //       <Route
-  //         path="*"
-  //         element={
-  //           <div
-  //             style={{
-  //               display: "flex",
-  //               justifyContent: "center",
-  //               alignItems: "center",
-  //               flexDirection: "column",
-  //               height: "100vh",
-  //             }}
-  //           >
-  //             <h2>404 Page Not Found ☹️</h2>
-  //             <Link to={"/"}>go back</Link>
-  //           </div>
-  //         }
-  //       />
-  //     </Routes>
-  //   </ThemeProvider>
-  // );
-}
-
-function Layout() {
-  return <Outlet />;
-}
-function Error() {
-  return (
-    <div
-      style={{
+  ) : (
+    <Backdrop
+      sx={{
+        color: "#fff",
+        backgroundColor: "#000000",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        height: "100vh",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
+      open={true}
     >
-      <h2>404 Page Not Found ☹️</h2>
-      <Link to={"/"}>go back</Link>
-    </div>
+      <CircularProgress color="inherit" />
+      <Typography paddingTop={5}>Please wait..</Typography>
+    </Backdrop>
   );
 }
+
 export default App;

@@ -42,7 +42,13 @@ const MyTextFieldBg = styled(Box)(({ theme }) => ({
   borderRadius: "15px",
 }));
 
-
+const centerStyle = {
+  height: "100vh",
+  width: "100vw",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 // function GetAlert({ message, type, handleClose }) {
 //   let messageType;
 //   if (type === "success") {
@@ -66,6 +72,7 @@ const common_styles = {
   MyTextField,
   MyTextFieldBg,
   MyButton,
+  centerStyle
 };
 
 export default common_styles;
