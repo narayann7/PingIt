@@ -15,9 +15,13 @@ import { FcGoogle } from "react-icons/fc";
 import api from "../../services/axios_api";
 import Urls from "../../services/urls";
 import Auth from "../../services/auth";
+import ErrorHandler from "../../models/ErrorModel";
+import common_utility_functions from "../../utility/common_fumctions";
+
 function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [loginLoading, setloginLoading] = useState(false);
   const [isVisibile, setIsVisibile] = useState(false);
   const [searchParams] = useSearchParams();
   const [alertMessage, setalertMessage] = useState("hello");
@@ -32,7 +36,7 @@ function Login() {
 
     if (!refreshtoken) {
       //check if user has refresh token in local storage
-      let temp = localStorage.getItem("refreshToken");
+      let temp = Auth.getRefreshToken();
 
       if (temp) {
         refreshtoken = temp;
@@ -41,6 +45,7 @@ function Login() {
 
     if (refreshtoken) {
       setisLoading(true);
+
       api
         .post(Urls.getAccessTokenUrl, { refreshtoken })
         .then((response) => {
@@ -53,7 +58,7 @@ function Login() {
             setOpenAlert(true);
             console.log(response.data);
             localStorage.setItem("refreshToken", response.data.refreshToken);
-            // navigate("/home", { replace: true });
+            navigate("/home", { replace: true });
           }
         })
         .catch((error) => {
@@ -63,10 +68,6 @@ function Login() {
           setalertMessage("Login Failed. try again");
         });
     }
-
-    // if (isAuthenticated) {
-    //   return <Redirect to="/home" />;
-    // }
   }, [navigate, searchParams]);
 
   const toggleVisibility = () => {
@@ -83,28 +84,35 @@ function Login() {
   };
 
   const loginOnClick = async () => {
-    try {
-      var refreshToken = Auth.getRefreshToken();
-
-      api
-        .post(Urls.getAccessTokenUrl, { refreshToken })
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {});
-
-      // console.log(result.data);
-    } catch (error) {}
-
-    // if (refreshtoken) {
-    //   console.log(refreshtoken);
-
-    //   Auth.getAccessToken(refreshtoken)
-    //     .then((response) => {
-    //       console.log(response);
-    //     })
-    //     .catch((error) => {});
-    // }
+    if (email === "") {
+      setOpenAlert(true);
+      setAlertType("error");
+      setalertMessage("Email is required");
+      return;
+    } else if (!common_utility_functions.isEmail(email)) {
+      setOpenAlert(true);
+      setAlertType("error");
+      setalertMessage("Invalid Email");
+      return;
+    } else if (password === "") {
+      setOpenAlert(true);
+      setAlertType("error");
+      setalertMessage("Password is required");
+      return;
+    } else {
+      setloginLoading(true);
+      var result = await Auth.login({ email, password });
+      if (result instanceof ErrorHandler) {
+        setOpenAlert(true);
+        setAlertType("error");
+        setalertMessage(result.message.error_message);
+        console.log(result);
+      } else {
+        console.log(result);
+        navigate("/home", { replace: true });
+      }
+      setloginLoading(false);
+    }
   };
 
   const handleClose = (event, reason) => {
@@ -133,7 +141,9 @@ function Login() {
         >
           <MyTextFieldBg>
             <MyTextField
+              // disabled={loginLoading}
               variant="filled"
+              type="email"
               placeholder="Enter your email"
               onChange={handleChangeEmail}
               value={email}
@@ -160,14 +170,12 @@ function Login() {
               )}
             </div>
           </MyTextFieldBg>
-          <MyButton
-            id="login"
-            onClick={async () => {
-              loginOnClick();
-            }}
-            variant="contained"
-          >
-            Login
+          <MyButton id="login" onClick={loginOnClick} variant="contained">
+            {loginLoading ? (
+              <CircularProgress thickness={6} size={22} color="inherit" />
+            ) : (
+              "Login"
+            )}
           </MyButton>
           <MyButton
             onClick={googleSignIn}

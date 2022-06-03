@@ -18,7 +18,7 @@ class ErrorHandlerClass extends Error {
   static userNotExist(message = "user not exist") {
     return new ErrorHandlerClass(409, message);
   }
-  static passwordNotMatched(message = "Password Not Matched") {
+  static passwordNotMatched(message = "Incorrect Password") {
     return new ErrorHandlerClass(409, message);
   }
   static invaildAccessToken(message = "unauthorised account") {

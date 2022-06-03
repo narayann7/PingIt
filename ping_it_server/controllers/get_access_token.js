@@ -7,6 +7,9 @@ const getAccessTokenController = {
   async getAccessToken(req, res, next) {
     let accessToken;
     let refreshToken = req.body.refreshtoken;
+    if (!refreshToken) {
+      return next(ErrorHandlerClass.custom("refresh token is required", 400));
+    }
     console.log(refreshToken);
 
     try {
