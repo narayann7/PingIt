@@ -11,13 +11,16 @@ import Error from "./components/error_component";
 import api from "./services/axios_api";
 import theme from "./utility/theme";
 import Urls from "./services/urls";
+import Otp from "./components/auth/otp";
 import "./App.css";
 import Signup from "./components/auth/signup";
+import { useRoot } from "./context_api/root_context";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
   let refreshtoken = Auth.getRefreshToken();
   const [isAuth, setisAuth] = useState(refreshtoken ? true : false);
+  const { switchKeys, setswitchKeys } = useRoot();
   useEffect(() => {
     setIsLoading(true);
     if (refreshtoken) {
@@ -51,7 +54,10 @@ function App() {
           <Route
             path="signup"
             element={isAuth ? <Navigate to={"/home"} /> : <Signup />}
-          />
+          >
+            <Route path="otp" element={<Otp />} />
+          </Route>
+
           <Route element={<ProtectedRoutes />}>
             <Route path="home" element={<Home />} />
             <Route path="test" element={<TestComp />} />

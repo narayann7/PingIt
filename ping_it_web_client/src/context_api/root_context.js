@@ -2,16 +2,20 @@ import { createContext, useState, useContext } from "react";
 
 export const RootContext = createContext();
 
-export const useAuth = () => {
+export const useRoot = () => {
   const context = useContext(RootContext);
   return context;
 };
 
 const RootContextProvider = (props) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [switchKeys, setswitchKeys] = useState({
+    isLoggedIn: false,
+    otpReceived: false,
+  });
+
   const value = {
-    isAuthenticated,
-    setIsAuthenticated,
+    switchKeys,
+    setswitchKeys,
   };
   return (
     <RootContext.Provider value={value}>{props.children}</RootContext.Provider>

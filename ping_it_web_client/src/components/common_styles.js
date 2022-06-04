@@ -17,8 +17,7 @@ const Text = styled(Typography)(({ theme }) => ({
 
 const MyTextField = styled(TextField)(({ theme }) => ({
   paddingBottom: "6px",
-  
-  
+
 }));
 
 const MyButton = styled(Button)(({ theme }) => ({
@@ -63,9 +62,9 @@ const centerStyle = {
 //     messageType = "info";
 //   }
 //   return (
-    // <Alert onClose={handleClose} severity={messageType} sx={{ width: "100%" }}>
-    //   {message}
-    // </Alert>
+// <Alert onClose={handleClose} severity={messageType} sx={{ width: "100%" }}>
+//   {message}
+// </Alert>
 //   );
 // }
 
@@ -74,7 +73,7 @@ const common_styles = {
   MyTextField,
   MyTextFieldBg,
   MyButton,
-  centerStyle
+  centerStyle,
 };
 
 export default common_styles;
