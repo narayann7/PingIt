@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200&family=Sen:wght@400;700;800&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200&family=Sen:wght@400;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,200&family=Sen:wght@400;700;800&display=swap");
 html {
   box-sizing: border-box;
 }
@@ -16,15 +16,31 @@ body,
 *:after {
   box-sizing: inherit;
 }
-just-center-c{
+.just-center-c {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-just-center-r{
+.just-center-r {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
+}
+
+.otp-input {
+  width: 60px;
+  height: 55px;
+  margin: 5px;
+  padding-left: 25px;
+  border-radius: 12px;
+  background-color: #030e21;
+  border: none;
+  color: white;
+}
+
+.otp-input:focus {
+  outline: none;
+  border: 1px solid #d8a01f;
 }

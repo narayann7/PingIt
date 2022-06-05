@@ -1,60 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./styles";
 import common_styles from "../common_styles";
-import { Button } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
+import { IoMdRefresh } from "react-icons/io";
 
 function Otp({ email }) {
-  const arr = [1, 2, 3];
-  const [focusedArray, setfocusedArray] = useState([true, false, false]);
-
-  const [currentField, setcurrentField] = useState(0);
-
-  const testOnChange = (e) => {
-    e.preventDefault();
-    setcurrentField(currentField + 1);
-    // setfocusedArray([false, true, false]);
-  };
-
-  const test = () => {};
-
-  return (
-    <BackgroundBox>
-      <CenterCard
-        style={{
-          height: "45vh",
-        }}
-      >
-        <OTPBox></OTPBox>
-        {/* {arr.map((item, index) => {
-          return (
-            <MyTextFieldBg
-              style={{
-                width: "20vw",
-              }}
-            >
-              <MyTextField
-                tabIndex={index}
-                onChange={testOnChange}
-                variant="filled"
-                type="text"
-                placeholder={index}
-                autoFocus={index === currentField}
-                focused={focusedArray[index]}
-                inputProps={{
-                  maxLength: 1,
-                }}
-              ></MyTextField>
-            </MyTextFieldBg>
-          );
-        })}
-
-        <Button onClick={test}>click</Button> */}
-      </CenterCard>
-    </BackgroundBox>
-  );
-}
-const OTPBox = () => {
-  const [otp, setOtp] = useState(new Array(4).fill(""));
+  const [otp, setOtp] = useState(new Array(6).fill(""));
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
@@ -67,21 +18,64 @@ const OTPBox = () => {
       // element.previousSibling.focus();
     }
   };
+  const [seconds, setseconds] = useState(5);
 
+  useEffect(() => {
+    if (seconds > 0) {
+      console.log(seconds);
+      const interval = setInterval(() => {
+        setseconds(seconds - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [seconds]);
   return (
-    <>
-      <div className="row">
-        <div className="col text-center">
-          <h2>Welcome to the channel!!!</h2>
-          <p>Enter the OTP sent to you to verify your identity</p>
-
+    <BackgroundBox>
+      <CenterCard
+        style={{
+          height: "350px",
+          width: "500px",
+          minWidth: "500px",
+          minHeight: "350px",
+          display: "flex",
+          flexDirection: "column",
+          flexShrink: 0,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="just-center-r">
+          <Typography>OTP has been sent to</Typography>
+          <div
+            style={{
+              margin: "10px",
+              paddingTop: "2px",
+              paddingBottom: "2px",
+              paddingLeft: "8px",
+              paddingRight: "8px",
+              borderRadius: "5px",
+              backgroundColor: "#030e21",
+            }}
+          >
+            <Typography>testing@gmail.com</Typography>
+          </div>
+        </div>
+        <Typography paddingBottom={2}>Enter the OTP here 👇</Typography>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
           {otp.map((data, index) => {
             return (
               <input
-                className="otp-field"
+                className="otp-input"
                 type="text"
                 name="otp"
                 maxLength="1"
+                autoFocus={index === 0}
                 key={index}
                 value={data}
                 onKeyDown={(e) => {
@@ -108,29 +102,41 @@ const OTPBox = () => {
               />
             );
           })}
-
-          <p>OTP Entered - {otp.join("")}</p>
-          <p>
-            <button
-              className="btn btn-secondary mr-2"
-              onClick={(e) => setOtp([...otp.map((v) => "")])}
-            >
-              Clear
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={(e) => alert("Entered OTP is " + otp.join(""))}
-            >
-              Verify OTP
-            </button>
-          </p>
         </div>
-      </div>
-    </>
+
+        {seconds > 0 ? (
+          <Typography paddingTop={2}>0.{seconds}</Typography>
+        ) : (
+          <MyButton
+            variant="contained"
+            style={{
+              backgroundColor: "#030e21",
+              width: "150px",
+              color: "#ecb75e",
+            }}
+            endIcon={<IoMdRefresh />}
+          >
+            resend
+          </MyButton>
+        )}
+
+        <MyButton
+          variant="contained"
+          style={{
+            backgroundColor: "#030e21",
+            width: "150px",
+            color: "#ecb75e",
+          }}
+        >
+          continue
+        </MyButton>
+      </CenterCard>
+    </BackgroundBox>
   );
-};
+}
+
 export default Otp;
 const BackgroundBox = styles.BackgroundBox;
 const CenterCard = styles.CenterCard;
-const MyTextField = common_styles.MyTextField;
 const MyTextFieldBg = common_styles.MyTextFieldBg;
+const MyButton = common_styles.MyButton;
