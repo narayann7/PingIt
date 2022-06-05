@@ -24,13 +24,14 @@ const controller = {
     }
 
     //created opt
-    let otp = Math.floor(100000 + Math.random() * 900000);
+    // let otp = Math.floor(100000 + Math.random() * 900000);
+    let otp = "123456";
     console.log(otp);
 
     //created jwt token for opt with 30s limit
     otp_token = JwtService.sign({
       payload: { otp: otp },
-      expiry: 30,
+      expiry: 10,
       secret: commonFunctions.base64encode(email),
     });
 

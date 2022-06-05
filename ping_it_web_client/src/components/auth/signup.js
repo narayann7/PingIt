@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
 import styles from "./styles";
@@ -30,54 +30,31 @@ function Signup() {
   const { switchKeys, setswitchKeys } = useRoot();
   const [SignupLoading, setSignupLoading] = useState(false);
   const [isVisibile, setIsVisibile] = useState(false);
-  const [searchParams] = useSearchParams();
-  const [alertMessage, setalertMessage] = useState("hello");
+  const [alertMessage, setalertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
   const [openAlert, setOpenAlert] = useState(false);
   const [isLoading, setisLoading] = useState(false);
-  const [alertType, setAlertType] = useState("success");
   const navigate = useNavigate();
 
+  const setAlert = useCallback(
+    ({ message, type, willActivate }) => {
+      setOpenAlert(willActivate);
+      setAlertType(type);
+      setalertMessage(message);
+    },
+    [setOpenAlert, setAlertType, setalertMessage]
+  );
+  const otpRecived = useCallback(
+    (key) => {
+      var temp = switchKeys;
+      temp.otpReceived = key;
+      setswitchKeys(temp);
+    },
+    [setswitchKeys, switchKeys]
+  );
   useEffect(() => {
     otpRecived(false);
-
-    //check if user is already logged in by google
-    let refreshtoken = searchParams.get("user");
-
-    if (!refreshtoken) {
-      //check if user has refresh token in local storage
-      let temp = Auth.getRefreshToken();
-
-      if (temp) {
-        refreshtoken = temp;
-      }
-    }
-
-    if (refreshtoken) {
-      setisLoading(true);
-
-      api
-        .post(Urls.getAccessTokenUrl, { refreshtoken })
-        .then((response) => {
-          console.log(response.data);
-
-          if (response.status === 200) {
-            setisLoading(false);
-            setAlertType("success");
-            setalertMessage("Signup Successful");
-            setOpenAlert(true);
-            console.log(response.data);
-            localStorage.setItem("refreshToken", response.data.refreshToken);
-            navigate("/home", { replace: true });
-          }
-        })
-        .catch((error) => {
-          setisLoading(false);
-          setOpenAlert(true);
-          setAlertType("error");
-          setalertMessage("Signup Failed. try again");
-        });
-    }
-  }, [navigate, searchParams]);
+  }, [otpRecived]);
 
   const toggleVisibility = () => {
     setIsVisibile(!isVisibile);
@@ -88,51 +65,76 @@ function Signup() {
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
+
+  const handleChangeName = (e) => {
+    setname(e.target.value);
+  };
   const googleSignIn = () => {
     window.open(`${Urls.severSignupWithGoogleUrl}`, "_self");
   };
 
-  const otpRecived = (key) => {
-    var temp = switchKeys;
-    temp.otpReceived = key;
-    setswitchKeys(temp);
-  };
-
   const SignupOnClick = async () => {
-    otpRecived(true);
-    navigate("/signup/otp", {
-      replace: true,
-    });
+    if (email === "") {
+      setAlert({
+        message: "Email is required",
+        type: "error",
+        willActivate: true,
+      });
 
-    // if (email === "") {
-    //   setOpenAlert(true);
-    //   setAlertType("error");
-    //   setalertMessage("Email is required");
-    //   return;
-    // } else if (!common_utility_functions.isEmail(email)) {
-    //   setOpenAlert(true);
-    //   setAlertType("error");
-    //   setalertMessage("Invalid Email");
-    //   return;
-    // } else if (password === "") {
-    //   setOpenAlert(true);
-    //   setAlertType("error");
-    //   setalertMessage("Password is required");
-    //   return;
-    // } else {
-    //   setSignupLoading(true);
-    //   var result = await Auth.Signup({ email, password });
-    //   if (result instanceof ErrorHandler) {
-    //     setOpenAlert(true);
-    //     setAlertType("error");
-    //     setalertMessage(result.message.error_message);
-    //     console.log(result);
-    //   } else {
-    //     console.log(result);
-    //     navigate("/home", { replace: true });
-    //   }
-    //   setSignupLoading(false);
-    // }
+      return;
+    } else if (!common_utility_functions.isEmail(email)) {
+      setAlert({
+        message: "Email is not valid",
+        type: "error",
+        willActivate: true,
+      });
+      return;
+    } else if (password === "") {
+      setAlert({
+        message: "Password is required",
+        type: "error",
+        willActivate: true,
+      });
+
+      return;
+    } else if (name === "") {
+      setAlert({
+        message: "Name is required",
+        type: "error",
+        willActivate: true,
+      });
+      return;
+    } else if (name.length < 3) {
+      setAlert({
+        message: "Name must be at least 3 characters",
+        type: "error",
+        willActivate: true,
+      });
+
+      return;
+    } else {
+      setSignupLoading(true);
+      var result = await Auth.sendOtp({
+        email,
+        username: name,
+        password,
+      });
+      if (result instanceof ErrorHandler) {
+        console.log(result.message);
+
+        setAlert({
+          message: result.message.error_message,
+          type: "error",
+          willActivate: true,
+        });
+      } else {
+        otpRecived(true);
+        navigate("/signup/otp", {
+          replace: true,
+        });
+      }
+      setSignupLoading(false);
+    }
   };
 
   const handleClose = (event, reason) => {
@@ -204,7 +206,7 @@ function Signup() {
                   value={name}
                   variant="filled"
                   type={"text"}
-                  onChange={handleChangePassword}
+                  onChange={handleChangeName}
                   placeholder="Enter your Name"
                 ></MyTextField>
 

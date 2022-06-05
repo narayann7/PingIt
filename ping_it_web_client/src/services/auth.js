@@ -13,14 +13,71 @@ export default class Auth {
     localStorage.setItem("refreshToken", refreshToken);
   }
 
-  static async signup({ email, password, name }) {}
+  static async signup({ email, password, username, otp_token, otp }) {
+    try {
+      var result = await api.post(Urls.serverSignupUrl, {
+        email,
+        password,
+        username,
+        otp_token,
+        otp,
+      });
+      if (result.status === 200) {
+        this.updateRefreshToken(result.data.refreshToken);
+            console.log(result.data.refreshToken);
+        
+        var accessToken = result.data.accessToken;
+
+        return {
+          accessToken,
+          refreshToken: result.data.refreshToken,
+          user: result.data.user,
+        };
+      }
+    } catch (error) {
+      return new ErrorHandler({
+        message: error.response.data,
+        statusCode: error.response.status,
+      });
+    }
+  }
+
+  static async sendOtp({ email, password, username }) {
+    try {
+      var result = await api.post(Urls.sendOtpUrl, {
+        email,
+
+        password,
+        username,
+      });
+      if (result.status === 200) {
+        localStorage.setItem(
+          "otp_data",
+          JSON.stringify({
+            email: result.data.email,
+            password: result.data.password,
+            username: result.data.username,
+            otp_token: result.data.otp_token,
+          })
+        );
+        return {
+          otp_token: result.data.otp_token,
+        };
+      }
+    } catch (error) {
+      return new ErrorHandler({
+        message: error.response.data,
+        statusCode: error.response.status,
+      });
+    }
+  }
 
   static async login({ email, password }) {
     try {
       var result = await api.post(Urls.serverLoginUrl, { email, password });
       if (result.status === 200) {
         console.log(result.data);
-        this.updateRefreshToken(result.data.refreshtoken);
+        this.updateRefreshToken(result.data.refreshToken);
         var accessToken = result.data.accessToken;
         return {
           accessToken,
@@ -42,6 +99,7 @@ export default class Auth {
         console.log(result.data);
         this.updateRefreshToken(result.data.refreshtoken);
         var accessToken = result.data.accessToken;
+
         return {
           accessToken,
           refreshToken: refreshtoken,

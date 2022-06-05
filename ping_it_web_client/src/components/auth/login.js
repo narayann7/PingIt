@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
 import styles from "./styles";
@@ -28,7 +28,14 @@ function Login() {
   const [isLoading, setisLoading] = useState(false);
   const [alertType, setAlertType] = useState("success");
   const navigate = useNavigate();
-
+  const setAlert = useCallback(
+    ({ message, type, willActivate }) => {
+      setOpenAlert(willActivate);
+      setAlertType(type);
+      setalertMessage(message);
+    },
+    [setOpenAlert, setAlertType, setalertMessage]
+  );
   useEffect(() => {
     //check if user is already logged in by google
     let refreshtoken = searchParams.get("user");
@@ -84,27 +91,35 @@ function Login() {
 
   const loginOnClick = async () => {
     if (email === "") {
-      setOpenAlert(true);
-      setAlertType("error");
-      setalertMessage("Email is required");
+      setAlert({
+        message: "Email is required",
+        type: "error",
+        willActivate: true,
+      });
       return;
     } else if (!common_utility_functions.isEmail(email)) {
-      setOpenAlert(true);
-      setAlertType("error");
-      setalertMessage("Invalid Email");
+      setAlert({
+        message: "Email is not valid",
+        type: "error",
+        willActivate: true,
+      });
       return;
     } else if (password === "") {
-      setOpenAlert(true);
-      setAlertType("error");
-      setalertMessage("Password is required");
+      setAlert({
+        message: "Password is required",
+        type: "error",
+        willActivate: true,
+      });
       return;
     } else {
       setloginLoading(true);
       var result = await Auth.login({ email, password });
       if (result instanceof ErrorHandler) {
-        setOpenAlert(true);
-        setAlertType("error");
-        setalertMessage(result.message.error_message);
+        setAlert({
+          message: result.message.error_message,
+          type: "error",
+          willActivate: true,
+        });
         console.log(result);
       } else {
         console.log(result);

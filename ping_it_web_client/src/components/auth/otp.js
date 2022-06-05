@@ -1,12 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./styles";
 import common_styles from "../common_styles";
-import { Button, IconButton, Typography } from "@mui/material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  IconButton,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import { IoMdRefresh } from "react-icons/io";
+import Auth from "../../services/auth";
+import ErrorHandler from "../../models/ErrorModel";
+import { useNavigate } from "react-router-dom";
+import { useRoot } from "../../context_api/root_context";
 
 function Otp({ email }) {
   const [otp, setOtp] = useState(new Array(6).fill(""));
+  const [alertMessage, setalertMessage] = useState("");
+  const [alertType, setAlertType] = useState("success");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [continueLoading, setcontinueLoading] = useState(false);
+  const navigate = useNavigate();
+  const { switchKeys, setswitchKeys } = useRoot();
 
+  let temp = localStorage.getItem("otp_data");
+  temp = JSON.parse(temp);
+  const [user, setuser] = useState(temp);
+
+  const setAlert = useCallback(
+    ({ message, type, willActivate }) => {
+      setOpenAlert(willActivate);
+      setAlertType(type);
+      setalertMessage(message);
+    },
+    [setOpenAlert, setAlertType, setalertMessage]
+  );
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
 
@@ -18,11 +47,10 @@ function Otp({ email }) {
       // element.previousSibling.focus();
     }
   };
-  const [seconds, setseconds] = useState(5);
+  const [seconds, setseconds] = useState(10);
 
   useEffect(() => {
     if (seconds > 0) {
-      console.log(seconds);
       const interval = setInterval(() => {
         setseconds(seconds - 1);
       }, 1000);
@@ -30,6 +58,78 @@ function Otp({ email }) {
       return () => clearInterval(interval);
     }
   }, [seconds]);
+
+  const resendOtp = async () => {
+    if (seconds <= 0) {
+      const res = await Auth.sendOtp({
+        email: user.email,
+        password: user.password,
+        username: user.username,
+      });
+      if (res instanceof ErrorHandler) {
+        setAlert({
+          message: res.message.error_message,
+          type: "error",
+          willActivate: true,
+        });
+      } else {
+        setseconds(10);
+        let temp = user;
+        temp.otp_token = res.otp_token;
+        setuser(temp);
+      }
+    }
+  };
+
+  const continueButton = async () => {
+    let count = 0;
+    otp.forEach((element) => {
+      if (element === "") count++;
+    });
+    if (count === 0) {
+      var otp_string = otp.join("");
+      setcontinueLoading(true);
+
+      var result = await Auth.signup({
+        email: user.email,
+        password: user.password,
+        username: user.username,
+        otp_token: user.otp_token,
+        otp: otp_string,
+      });
+
+      if (result instanceof ErrorHandler) {
+        setAlert({
+          message: result.message.error_message,
+          type: "error",
+          willActivate: true,
+        });
+      } else {
+        localStorage.removeItem("otp_data");
+        let temp = switchKeys;
+        temp.isLoggedIn = true;
+        temp.otpReceived = false;
+        setswitchKeys(temp);
+        navigate("/home", {
+          replace: true,
+        });
+      }
+    } else {
+      setAlert({
+        message: "Please enter all the fields",
+        type: "error",
+        willActivate: true,
+      });
+    }
+    setcontinueLoading(false);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenAlert(false);
+  };
+
   return (
     <BackgroundBox>
       <CenterCard
@@ -58,7 +158,7 @@ function Otp({ email }) {
               backgroundColor: "#030e21",
             }}
           >
-            <Typography>testing@gmail.com</Typography>
+            <Typography>{user.email}</Typography>
           </div>
         </div>
         <Typography paddingBottom={2}>Enter the OTP here 👇</Typography>
@@ -109,6 +209,7 @@ function Otp({ email }) {
         ) : (
           <MyButton
             variant="contained"
+            onClick={resendOtp}
             style={{
               backgroundColor: "#030e21",
               width: "150px",
@@ -122,15 +223,34 @@ function Otp({ email }) {
 
         <MyButton
           variant="contained"
+          onClick={continueButton}
           style={{
             backgroundColor: "#030e21",
             width: "150px",
             color: "#ecb75e",
           }}
         >
-          continue
+          {continueLoading ? (
+            <CircularProgress thickness={6} size={22} color="inherit" />
+          ) : (
+            "continue"
+          )}
         </MyButton>
       </CenterCard>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        open={openAlert}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={alertType}
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </BackgroundBox>
   );
 }
