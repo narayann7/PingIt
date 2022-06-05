@@ -29,6 +29,7 @@ const controller = {
       username,
       password: hashedPassword,
       authType: "EMAIL",
+      displayPictureUrl: "",
     });
     try {
       const userDetails = await user.save();

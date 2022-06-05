@@ -26,7 +26,7 @@ const getAccessTokenController = {
           accessToken = JwtService.sign({
             payload: { _id: _id, email: email },
             secret: secret,
-            expiry: 15,
+            expiry: "1y",
           });
 
           res.status(200).json({

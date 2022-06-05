@@ -70,7 +70,7 @@ function Signup() {
     setname(e.target.value);
   };
   const googleSignIn = () => {
-    window.open(`${Urls.severSignupWithGoogleUrl}`, "_self");
+    window.open(`${Urls.severLoginWithGoogleUrl}`, "_self");
   };
 
   const SignupOnClick = async () => {

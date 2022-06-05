@@ -23,7 +23,7 @@ const isAuthenticated = (req, res, next) => {
         if (!result) {
           return next(ErrorHandlerClass.notExist());
         }
-        const { _id, email, password } = result;
+        const { _id, email, password, authType, username } = result;
         const secret = commonFunctions.base64encode(password);
 
         const validAccessToken = JwtService.verify({
@@ -35,6 +35,8 @@ const isAuthenticated = (req, res, next) => {
 
         const user = {
           _id,
+          authType,
+          username,
           email,
         };
 

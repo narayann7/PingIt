@@ -3,9 +3,7 @@ import styles from "./styles";
 import common_styles from "../common_styles";
 import {
   Alert,
-  Button,
   CircularProgress,
-  IconButton,
   Snackbar,
   Typography,
 } from "@mui/material";
@@ -258,5 +256,4 @@ function Otp({ email }) {
 export default Otp;
 const BackgroundBox = styles.BackgroundBox;
 const CenterCard = styles.CenterCard;
-const MyTextFieldBg = common_styles.MyTextFieldBg;
 const MyButton = common_styles.MyButton;
