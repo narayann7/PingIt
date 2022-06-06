@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from "react";
-import styles from "./styles";
 import common_styles from "../common_styles";
 import {
   Alert,
@@ -254,6 +253,6 @@ function Otp({ email }) {
 }
 
 export default Otp;
-const BackgroundBox = styles.BackgroundBox;
-const CenterCard = styles.CenterCard;
+const BackgroundBox = common_styles.BackgroundBox;
+const CenterCard = common_styles.CenterCard;
 const MyButton = common_styles.MyButton;

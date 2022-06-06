@@ -1,11 +1,9 @@
 import { React, useState, useEffect, useCallback } from "react";
-import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useNavigate,  } from "react-router-dom";
 import common_styles from "../common_styles";
-import styles from "./styles";
 import {
   Box,
   Snackbar,
-  Backdrop,
   CircularProgress,
   Alert,
 } from "@mui/material";
@@ -16,7 +14,6 @@ import {
   HiUserCircle,
 } from "react-icons/hi";
 import { FcGoogle } from "react-icons/fc";
-import api from "../../services/axios_api";
 import Urls from "../../services/urls";
 import Auth from "../../services/auth";
 import ErrorHandler from "../../models/ErrorModel";
@@ -33,7 +30,6 @@ function Signup() {
   const [alertMessage, setalertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
   const [openAlert, setOpenAlert] = useState(false);
-  const [isLoading, setisLoading] = useState(false);
   const navigate = useNavigate();
 
   const setAlert = useCallback(
@@ -273,13 +269,6 @@ function Signup() {
             </Alert>
           </Snackbar>
 
-          <Backdrop
-            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={isLoading}
-            onClick={handleClose}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
         </BackgroundBox>
       ) : (
         <Outlet />
@@ -290,8 +279,8 @@ function Signup() {
 
 //----------- EXTRA------------------
 
-const BackgroundBox = styles.BackgroundBox;
-const CenterCard = styles.CenterCard;
+const BackgroundBox = common_styles.BackgroundBox;
+const CenterCard = common_styles.CenterCard;
 const Text = common_styles.Text;
 const MyTextField = common_styles.MyTextField;
 const MyTextFieldBg = common_styles.MyTextFieldBg;

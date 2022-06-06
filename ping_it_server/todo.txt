@@ -1,0 +1,22 @@
+models 
+ - single message
+ - messages {
+     [ single message ]
+     id gen from sender and reciver 
+     sender email
+     reciver email
+ }
+ - users - {
+     list of friends
+ }
+
+
+socket side :
+
+message - room
+friend req
+online offine 
+
+
+
+

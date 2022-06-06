@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import common_styles from "../common_styles";
-import styles from "./styles";
+
 import {
   Box,
   Snackbar,
@@ -256,8 +256,8 @@ function Login() {
 
 //----------- EXTRA------------------
 
-const BackgroundBox = styles.BackgroundBox;
-const CenterCard = styles.CenterCard;
+const BackgroundBox = common_styles.BackgroundBox;
+const CenterCard = common_styles.CenterCard;
 const Text = common_styles.Text;
 const MyTextField = common_styles.MyTextField;
 const MyTextFieldBg = common_styles.MyTextFieldBg;

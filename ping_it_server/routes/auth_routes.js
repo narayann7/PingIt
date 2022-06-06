@@ -9,8 +9,7 @@ router.post("/login", controllers.login);
 router.post("/getaccesstoken", controllers.getAccessToken);
 router.get("/google", controllers.loginWithGoogle);
 router.get("/google/callback", controllers.loginWithGoogleCallback);
-router.get("/user", isAuthenticated, controllers.getUser);
-router.post("/user", isAuthenticated, controllers.updateUser);
+
 
 //---------------------- TESTING ------------------------
 router.get("/test", isAuthenticated, (req, res) => {

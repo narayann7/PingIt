@@ -17,7 +17,7 @@ const commonFunctions = {
     if (body.username == "") {
       return ErrorHandlerClass.custom("name is required", 400);
     }
-    if (body.username.length < 5) {
+    if (body.username.length < 3) {
       return ErrorHandlerClass.custom("name length should greater than 5", 400);
     }
 
