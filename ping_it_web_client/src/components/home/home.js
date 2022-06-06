@@ -5,26 +5,27 @@ import { useNavigate } from "react-router-dom";
 import Chat from "./chat";
 import AllChats from "./all_chats";
 import AppBar from "./app_bar";
+import HomeContextProvider from "./../../context_api/home_context";
 const BackgroundBox = common_styles.BackgroundBox;
 
-const centerStyle = common_styles.centerStyle;
-const MyButton = common_styles.MyButton;
 function Home() {
   const navigate = useNavigate();
   return (
-    <BackgroundBox
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-      }}
-    >
-      <div>
-        <AppBar />
-        <AllChats />
-      </div>
-      <Chat />
-    </BackgroundBox>
+    <HomeContextProvider>
+      <BackgroundBox
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <AppBar />
+          <AllChats />
+        </div>
+        <Chat />
+      </BackgroundBox>
+    </HomeContextProvider>
   );
 }
 

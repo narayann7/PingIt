@@ -5,9 +5,11 @@ function Chat() {
   return (
     <CenterCard
       style={{
-        width: "50vw",
+        width: "60vw",
         height: "90vh",
-        position: "50%",
+        margin: "50px",
+        minWidth: "500px",
+        minHeight: "500px",
       }}
     ></CenterCard>
   );
