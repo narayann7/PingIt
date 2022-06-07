@@ -4,7 +4,8 @@ import ErrorHandler from "../models/ErrorModel";
 
 export default class Auth {
   static getRefreshToken() {
-    return localStorage.getItem("refreshToken");
+    var result = localStorage.getItem("refreshToken");
+    return result;
   }
   static deleteRefreshToken() {
     localStorage.removeItem("refreshToken");
@@ -24,8 +25,7 @@ export default class Auth {
       });
       if (result.status === 200) {
         this.updateRefreshToken(result.data.refreshToken);
-            console.log(result.data.refreshToken);
-        
+
         var accessToken = result.data.accessToken;
 
         return {
@@ -76,9 +76,9 @@ export default class Auth {
     try {
       var result = await api.post(Urls.serverLoginUrl, { email, password });
       if (result.status === 200) {
-        console.log(result.data);
         this.updateRefreshToken(result.data.refreshToken);
         var accessToken = result.data.accessToken;
+
         return {
           accessToken,
           refreshToken: result.data.refreshToken,
@@ -96,8 +96,7 @@ export default class Auth {
     try {
       var result = await api.post(Urls.getAccessTokenUrl, { refreshtoken });
       if (result.status === 200) {
-        console.log(result.data);
-        this.updateRefreshToken(result.data.refreshtoken);
+        this.updateRefreshToken(result.data.refreshToken);
         var accessToken = result.data.accessToken;
 
         return {

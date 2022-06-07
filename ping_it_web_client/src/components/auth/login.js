@@ -120,9 +120,7 @@ function Login() {
           type: "error",
           willActivate: true,
         });
-        console.log(result);
       } else {
-        console.log(result);
         navigate("/home", { replace: true });
       }
       setloginLoading(false);

@@ -9,7 +9,7 @@ const controller = {
   login: async (req, res, next) => {
     try {
       const { email, password } = req.body;
-      const result = await User.findOne({ email: email });
+      let result = await User.findOne({ email: email });
       if (!result) {
         return next(ErrorHandlerClass.notExist());
       }
@@ -19,6 +19,8 @@ const controller = {
       if (!check) return next(ErrorHandlerClass.passwordNotMatched());
 
       const { accessToken, refreshToken } = common.setUserInDb(result);
+      // result = common.removeDataFromUser(result);
+
       res.json({ accessToken, refreshToken });
     } catch (error) {
       return next(error);

@@ -6,8 +6,8 @@ const isAuthenticated = require("../middlewares/is_authenticated");
 // ----  baseurl/api/user?email=your_email
 router.get("/", isAuthenticated, controllers.getSingleUser);
 router.get("/all", isAuthenticated, controllers.getUsers);
-router.get("/me", isAuthenticated, controllers.getUser);
-router.post("/me", isAuthenticated, controllers.updateUser);
+router.get("/me", isAuthenticated, controllers.getMe);
+router.post("/me", isAuthenticated, controllers.updateMe);
 
 //---------------------- TESTING ------------------------
 router.get("/test", isAuthenticated, (req, res) => {

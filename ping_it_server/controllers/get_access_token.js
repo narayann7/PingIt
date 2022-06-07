@@ -10,7 +10,6 @@ const getAccessTokenController = {
     if (!refreshToken) {
       return next(ErrorHandlerClass.custom("refresh token is required", 400));
     }
-    console.log(refreshToken);
 
     try {
       let result = JwtService.refreshVerify({

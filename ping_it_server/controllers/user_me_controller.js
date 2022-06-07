@@ -1,17 +1,16 @@
 const User = require("../models/user_model");
 
 const controller = {
-  getUser: function (req, res, next) {
+  getMe: function (req, res, next) {
     if (!req.User) {
       return next(ErrorHandlerClass.custom("user not found", 400));
     }
 
     res.json({
-      message: "success",
       user: req.User,
     });
   },
-  updateUser: async function (req, res, next) {
+  updateMe: async function (req, res, next) {
     if (!req.User) {
       return next(ErrorHandlerClass.custom("user not found", 400));
     }

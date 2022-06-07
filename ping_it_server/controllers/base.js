@@ -16,8 +16,8 @@ const controller = {
   loginWithGoogleCallback: googleController.loginWithGoogleCallback,
 
   //user
-  getUser: userController.getUser,
-  updateUser: userController.updateUser,
+  getMe: userController.getMe,
+  updateMe: userController.updateMe,
   getSingleUser: getSingleUserController.getSingleUser,
   getUsers: getSingleUserController.getUsers,
 };

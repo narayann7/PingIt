@@ -29,6 +29,13 @@ const common = {
       return ErrorHandlerClass.custom(error, 400);
     }
   },
+
+  removeDataFromUser: function (user) {
+    user.password = undefined;
+    user.createdAt = undefined;
+    user.updatedAt = undefined;
+    return user;
+  },
 };
 
 module.exports = common;

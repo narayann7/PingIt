@@ -116,7 +116,6 @@ function Signup() {
         password,
       });
       if (result instanceof ErrorHandler) {
-        console.log(result.message);
 
         setAlert({
           message: result.message.error_message,

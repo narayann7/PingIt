@@ -15,6 +15,7 @@ import Otp from "./components/auth/otp";
 import "./App.css";
 import Signup from "./components/auth/signup";
 import { useRoot } from "./context_api/root_context";
+import HomeContextProvider from "./context_api/home_context";
 
 function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,14 +28,10 @@ function App() {
       api
         .post(Urls.getAccessTokenUrl, { refreshtoken })
         .then((response) => {
-          console.log(response.data);
-
           if (response.status === 200) {
-            console.log(response.data);
           }
         })
         .catch((error) => {
-          console.log(error);
           // deleteRefreshToken();
           setisAuth(false);
         });
@@ -59,7 +56,14 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoutes />}>
-            <Route path="home" element={<Home />} />
+            <Route
+              path="home"
+              element={
+                <HomeContextProvider>
+                  <Home />
+                </HomeContextProvider>
+              }
+            />
             <Route path="test" element={<TestComp />} />
           </Route>
           <Route path="*" element={<Error />} />

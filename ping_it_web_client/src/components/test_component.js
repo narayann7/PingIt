@@ -1,6 +1,6 @@
-
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
+import UserService from "../services/user";
 const socket = io("http://localhost:3001");
 
 function TestComp() {
@@ -9,19 +9,19 @@ function TestComp() {
   const [myid, setMyid] = useState(0);
   const [messages, setMessages] = useState([]);
   // { userId: "", message: "" }
-  const onClick = () => {
-    if (value.length !== 0) {
-      socket.emit("join_room", {  roomid });
-      var tempMessage = {
-        userId: socket.id,
-        key: Math.random().toString(),
-        text: value,
-      };
-      const tempMessages = messages.concat(tempMessage);
-      setMessages(tempMessages);
-      socket.emit("send_message", {  tempMessage, roomid });
-      setMyid(socket.id);
-    }
+  const onClick = async () => {
+    // if (value.length !== 0) {
+    //   socket.emit("join_room", {  roomid });
+    //   var tempMessage = {
+    //     userId: socket.id,
+    //     key: Math.random().toString(),
+    //     text: value,
+    //   };
+    //   const tempMessages = messages.concat(tempMessage);
+    //   setMessages(tempMessages);
+    //   socket.emit("send_message", {  tempMessage, roomid });
+    //   setMyid(socket.id);
+    // }
   };
 
   const onChange = (e) => {
