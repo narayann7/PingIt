@@ -60,7 +60,33 @@ class UserService {
       result = await api.get(url, config);
       if (result.status === 200) {
         await timeout(1000);
-          return result.data;
+        return result.data;
+      }
+    } catch (error) {
+      return new ErrorHandler({
+        message: error.response.data,
+        statusCode: error.response.status,
+      });
+    }
+  }
+  static async getFriends() {
+    try {
+      var refreshToken = Auth.getRefreshToken();
+
+      var result = await Auth.getAccessToken(refreshToken);
+      if (result instanceof ErrorHandler) {
+        return result;
+      }
+      var accessToken = result.accessToken;
+      let config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          refreshtoken: refreshToken,
+        },
+      };
+      result = await api.get(Urls.serverGetFriendsUrl, config);
+      if (result.status === 200) {
+        return result.data;
       }
     } catch (error) {
       return new ErrorHandler({
@@ -71,6 +97,6 @@ class UserService {
   }
 }
 function timeout(delay) {
-  return new Promise( res => setTimeout(res, delay) );
+  return new Promise((res) => setTimeout(res, delay));
 }
 export default UserService;

@@ -15,5 +15,17 @@ const controller = {
       return next(error);
     }
   },
+  getFriends: function (req, res, next) {
+    try {
+      UserFriends.findOne(
+        { userId: req.User._id.valueOf() },
+        (error, success) => {
+          res.send(success);
+        }
+      );
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 module.exports = controller;

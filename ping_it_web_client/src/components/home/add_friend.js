@@ -41,9 +41,11 @@ function AddFriend() {
       case "initial":
         return initalImage;
       case "loading":
-        return Skeletons;
+        return userCardSkeletons;
       case "success":
-        return users.map((user, index) => <UserCard key={index} user={user} />);
+        return users.map((user, index) => (
+          <UserCard key={index} user={user} type="add_friend" />
+        ));
       case "error":
         return (
           <div
@@ -85,7 +87,7 @@ export default AddFriend;
 
 //-------------Styles------------------
 
-const Skeletons = (
+export const userCardSkeletons = (
   <>
     <UserCardSkeleton />
     <UserCardSkeleton />

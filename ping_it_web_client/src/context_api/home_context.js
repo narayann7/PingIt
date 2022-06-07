@@ -9,6 +9,14 @@ export const useHomeContext = () => {
 
 function HomeContextProvider(props) {
   const [user, setUser] = useState({});
+  const [userFriends, setuserFriends] = useState([]);
+
+  const addFriend = (friend) => {
+    let temp = userFriends;
+    temp.push(friend);
+    setuserFriends(temp);
+  };
+
   const [currentTab, setcurrentTab] = useState(0);
   const [stateIndex, setstateIndex] = useState(0);
   const [apiState, setapiState] = useState([
@@ -32,6 +40,9 @@ function HomeContextProvider(props) {
     apiState,
     setapiState,
     addUser,
+    userFriends,
+    addFriend,
+    setuserFriends,
   };
   return (
     <HomeContext.Provider value={values}>{props.children}</HomeContext.Provider>

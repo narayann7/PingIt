@@ -9,6 +9,8 @@ class Urls {
   static sendOtpUrl = `${Urls.serverBaseUrl}/api/auth/sendotp`;
   static serverGetMeUrl = `${Urls.serverBaseUrl}/api/user/me`;
   static serverGetUserUrl = `${Urls.serverBaseUrl}/api/user/all`;
+  static serverAddFriendUrl = `${Urls.serverBaseUrl}/api/user/addfriend`;
+  static serverGetFriendsUrl = `${Urls.serverBaseUrl}/api/user/friends`;
 }
 
 export default Urls;

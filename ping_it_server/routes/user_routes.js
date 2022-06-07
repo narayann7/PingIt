@@ -9,6 +9,7 @@ router.get("/all", isAuthenticated, controllers.getUsers);
 router.get("/me", isAuthenticated, controllers.getMe);
 router.post("/me", isAuthenticated, controllers.updateMe);
 router.post("/addfriend", isAuthenticated, controllers.addFriend);
+router.get("/friends", isAuthenticated, controllers.getFriends);
 
 //---------------------- TESTING ------------------------
 router.get("/test", isAuthenticated, (req, res) => {

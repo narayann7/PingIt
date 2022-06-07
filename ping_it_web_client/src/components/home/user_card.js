@@ -6,7 +6,7 @@ import common_styles from "../common_styles";
 import { useHomeContext } from "../../context_api/home_context";
 const Text = common_styles.Text;
 
-function UserCard({ user }) {
+function UserCard({ user, type }) {
   const { addUser } = useHomeContext();
   return (
     <Card
@@ -53,16 +53,32 @@ function UserCard({ user }) {
           <Text>{user.username}</Text>
           <Text>{user.email}</Text>
         </div>
-        <div onClick={() => addUser(user)}>
-          <Avatar
-            style={{
-              backgroundColor: "#030e21",
-            }}
-            className="add_friend"
+
+        {type === "add_friend" ? (
+          <div onClick={() => addUser(user)}>
+            <Avatar
+              style={{
+                backgroundColor: "#030e21",
+              }}
+              className="add_friend"
+            >
+              <TiUserAddOutline color="#d8a01f" />
+            </Avatar>
+          </div>
+        ) : (
+          <div
+          // onClick={() => addUser(user)}
           >
-            <TiUserAddOutline color="#d8a01f" />
-          </Avatar>
-        </div>
+            <Avatar
+              style={{
+                backgroundColor: "#030e21",
+              }}
+              className="add_friend"
+            >
+              <TiUserAddOutline color="#d8a01f" />
+            </Avatar>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
