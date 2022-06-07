@@ -5,6 +5,9 @@ const common_utility_functions = {
 
     return regExp.test(email);
   },
+  timeout: (delay) => {
+    return new Promise((res) => setTimeout(res, delay));
+  },
 };
 
 export default common_utility_functions;

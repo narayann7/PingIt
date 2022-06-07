@@ -1,4 +1,4 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useState } from "react";
 import Auth from "../../services/auth";
 import common_styles from "../common_styles";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -16,7 +16,13 @@ const BackgroundBox = common_styles.BackgroundBox;
 
 function Home() {
   const navigate = useNavigate();
-  const { setUser } = useHomeContext();
+  const { setUser, currentTab } = useHomeContext();
+  const [tabComponent, settabComponent] = useState([
+    <AllChats />,
+    <Profile />,
+    <AddFriend />,
+    <Search />,
+  ]);
 
   useEffect(() => {
     UserService.getMe().then((result) => {
@@ -29,31 +35,29 @@ function Home() {
   }, [navigate, setUser]);
 
   return (
-
-      <BackgroundBox
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
-          <AppBar />
-          <AllChats />
-          {/* <Routes>
+    <BackgroundBox
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+      }}
+    >
+      <div>
+        <AppBar />
+        {tabComponent[currentTab]}
+        {/* <Routes>
             <Route>
               <Route to="/home" element={<AllChats />} />
             </Route>
           </Routes> */}
 
-          {/* <AllChats />
+        {/* <AllChats />
           <AddFriend />
           <Profile />
           <Search /> */}
-        </div>
-        <Chat />
-      </BackgroundBox>
-  
+      </div>
+      <Chat />
+    </BackgroundBox>
   );
 }
 

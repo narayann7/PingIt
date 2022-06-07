@@ -40,6 +40,37 @@ class UserService {
   static deleteMeLocalStorage() {
     localStorage.removeItem("user_me");
   }
-}
 
+  static async searchUser(searchText) {
+    try {
+      var refreshToken = Auth.getRefreshToken();
+
+      var result = await Auth.getAccessToken(refreshToken);
+      if (result instanceof ErrorHandler) {
+        return result;
+      }
+      var accessToken = result.accessToken;
+      let config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          refreshtoken: refreshToken,
+        },
+      };
+      var url = Urls.serverGetUserUrl + "?name=" + searchText;
+      result = await api.get(url, config);
+      if (result.status === 200) {
+        await timeout(2000);
+          return result.data;
+      }
+    } catch (error) {
+      return new ErrorHandler({
+        message: error.response.data,
+        statusCode: error.response.status,
+      });
+    }
+  }
+}
+function timeout(delay) {
+  return new Promise( res => setTimeout(res, delay) );
+}
 export default UserService;

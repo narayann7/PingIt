@@ -8,6 +8,7 @@ class Urls {
   static getAccessTokenUrl = `${Urls.serverBaseUrl}/api/auth/getaccesstoken`;
   static sendOtpUrl = `${Urls.serverBaseUrl}/api/auth/sendotp`;
   static serverGetMeUrl = `${Urls.serverBaseUrl}/api/user/me`;
+  static serverGetUserUrl = `${Urls.serverBaseUrl}/api/user/all`;
 }
 
 export default Urls;

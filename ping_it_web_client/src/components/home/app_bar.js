@@ -1,11 +1,10 @@
 import { Avatar, CardMedia } from "@mui/material";
-import { Box } from "@mui/system";
 import { TiUserAddOutline } from "react-icons/ti";
 import { BiSearchAlt, BiLogInCircle } from "react-icons/bi";
-import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { RiUser3Line } from "react-icons/ri";
+import { React } from "react";
+import { useNavigate } from "react-router-dom";
 import common_styles from "../common_styles";
-
 import UserService from "../../services/user";
 import Auth from "../../services/auth";
 import { useHomeContext } from "../../context_api/home_context";
@@ -14,44 +13,67 @@ const Text = common_styles.Text;
 
 function AppBar() {
   const navigate = useNavigate();
-  const { user } = useHomeContext();
+  const { user, setcurrentTab } = useHomeContext();
 
-  useEffect(() => {
-    {
-    }
-  }, []);
+  // useEffect(() => {
+  //   {
+  //   }
+  // }, []);
 
   const logout = () => {
     Auth.deleteRefreshToken();
     UserService.deleteMeLocalStorage();
     navigate("/login", { replace: true });
   };
+  const allChat = () => {
+    setcurrentTab(0);
+  };
+  const addFriend = () => {
+    setcurrentTab(2);
+  };
+  const profile = () => {
+    setcurrentTab(1);
+  };
+  // const search = () => {
+  //   setcurrentTab(3);
+  // };
   return (
     <CenterCard style={cardStyle}>
-      {Heading}
+      <div onClick={allChat}>{Heading}</div>
 
       <Avatar
         style={{
-          backgroundColor: "#1a1a2b",
+          backgroundColor: user.displayPictureUrl ? "#1a1a2b" : "#030e21",
+          color: "#fff",
         }}
+        className="profile"
+        onClick={profile}
         alt="user"
       >
-        <CardMedia component="img" image={user.displayPictureUrl} />
+        {user.displayPictureUrl ? (
+          <CardMedia component="img" image={user.displayPictureUrl} />
+        ) : (
+          <RiUser3Line color="#d8a01f" />
+        )}
       </Avatar>
       <Avatar
         style={{
           backgroundColor: "#030e21",
         }}
+        className="add_friend"
+        onClick={addFriend}
       >
         <TiUserAddOutline color="#d8a01f" />
       </Avatar>
-      <Avatar
+      {/* <Avatar
         style={{
           backgroundColor: "#030e21",
         }}
+        className="search"
+        onClick={search}
       >
         <BiSearchAlt color="#d8a01f" />
-      </Avatar>
+      </Avatar> */}
       <Avatar
         className="logout"
         onClick={logout}
@@ -97,7 +119,6 @@ const cardStyle = {
   width: "30vw",
   height: "10vh",
   marginLeft: "40px",
-  marginTop: "30px",
   minWidth: "250px",
   minHeight: "60px",
   display: "flex",
