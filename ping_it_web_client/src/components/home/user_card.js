@@ -3,9 +3,11 @@ import React from "react";
 import { RiUser3Line } from "react-icons/ri";
 import { TiUserAddOutline } from "react-icons/ti";
 import common_styles from "../common_styles";
+import { useHomeContext } from "../../context_api/home_context";
 const Text = common_styles.Text;
 
 function UserCard({ user }) {
+  const { addUser } = useHomeContext();
   return (
     <Card
       style={{
@@ -51,14 +53,16 @@ function UserCard({ user }) {
           <Text>{user.username}</Text>
           <Text>{user.email}</Text>
         </div>
-        <Avatar
-          style={{
-            backgroundColor: "#030e21",
-          }}
-          className="add_friend"
-        >
-          <TiUserAddOutline color="#d8a01f" />
-        </Avatar>
+        <div onClick={() => addUser(user)}>
+          <Avatar
+            style={{
+              backgroundColor: "#030e21",
+            }}
+            className="add_friend"
+          >
+            <TiUserAddOutline color="#d8a01f" />
+          </Avatar>
+        </div>
       </CardContent>
     </Card>
   );

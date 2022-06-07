@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import UserCard, { UserCardSkeleton } from "../home/user_card";
 import common_styles from "../common_styles";
 import { useHomeContext } from "../../context_api/home_context";
-import { Card, CardMedia, IconButton } from "@mui/material";
+import { CardMedia, IconButton } from "@mui/material";
 import UserService from "../../services/user";
 import searchImage from "../../assets/images/search.png";
 import sadImage from "../../assets/images/sad.png";
 import ErrorHandler from "../../models/ErrorModel";
+import socket from "../../services/socket_services";
 const CenterCard = common_styles.CenterCard;
 const Text = common_styles.Text;
 
 function AddFriend() {
-  const { user, stateIndex, setstateIndex, apiState, setapiState } =
-    useHomeContext();
+  const { stateIndex, setstateIndex, apiState } = useHomeContext();
   const [search, setsearch] = useState("");
   const [users, setusers] = useState([]);
 
@@ -26,6 +26,7 @@ function AddFriend() {
     setstateIndex(1);
     var result = await UserService.searchUser(search);
     if (result instanceof ErrorHandler) {
+      setstateIndex(3);
     }
     if (result.users.length === 0) {
       setstateIndex(-1);
@@ -38,12 +39,11 @@ function AddFriend() {
   const renderSwitch = (param) => {
     switch (param) {
       case "initial":
-        
         return initalImage;
       case "loading":
         return Skeletons;
       case "success":
-        return users.map((user,index) => <UserCard key={index} user={user} />);
+        return users.map((user, index) => <UserCard key={index} user={user} />);
       case "error":
         return (
           <div
@@ -76,22 +76,7 @@ function AddFriend() {
           </IconButton>
         </form>
       </CenterCard>
-      <div style={resultStyle}>
-        {renderSwitch(apiState[stateIndex])}
-        {/* {Skeletons} */}
-        {/* <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} />
-        <UserCard user={user} /> */}
-      </div>
+      <div style={resultStyle}>{renderSwitch(apiState[stateIndex])}</div>
     </CenterCard>
   );
 }

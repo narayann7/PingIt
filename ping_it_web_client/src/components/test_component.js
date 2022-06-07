@@ -10,18 +10,18 @@ function TestComp() {
   const [messages, setMessages] = useState([]);
   // { userId: "", message: "" }
   const onClick = async () => {
-    // if (value.length !== 0) {
-    //   socket.emit("join_room", {  roomid });
-    //   var tempMessage = {
-    //     userId: socket.id,
-    //     key: Math.random().toString(),
-    //     text: value,
-    //   };
-    //   const tempMessages = messages.concat(tempMessage);
-    //   setMessages(tempMessages);
-    //   socket.emit("send_message", {  tempMessage, roomid });
-    //   setMyid(socket.id);
-    // }
+    if (value.length !== 0) {
+      socket.emit("join_room", {  roomid });
+      var tempMessage = {
+        userId: socket.id,
+        key: Math.random().toString(),
+        text: value,
+      };
+      const tempMessages = messages.concat(tempMessage);
+      setMessages(tempMessages);
+      socket.emit("send_message", {  tempMessage, roomid });
+      setMyid(socket.id);
+    }
   };
 
   const onChange = (e) => {
@@ -161,4 +161,4 @@ function SingleMessage({ message, userId, isMe }) {
   );
 }
 
-export default TestComp;
+// export default TestComp;

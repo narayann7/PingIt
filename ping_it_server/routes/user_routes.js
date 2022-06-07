@@ -8,10 +8,11 @@ router.get("/", isAuthenticated, controllers.getSingleUser);
 router.get("/all", isAuthenticated, controllers.getUsers);
 router.get("/me", isAuthenticated, controllers.getMe);
 router.post("/me", isAuthenticated, controllers.updateMe);
+router.post("/addfriend", isAuthenticated, controllers.addFriend);
 
 //---------------------- TESTING ------------------------
 router.get("/test", isAuthenticated, (req, res) => {
-  res.send(`Hello ${req.query.name}`);
+  res.send("hello");
 });
 
 module.exports = router;

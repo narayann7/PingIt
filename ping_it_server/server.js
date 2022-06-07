@@ -45,8 +45,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("a user connected", socket.id);
 
+  socket.on("add_user", (data) => {
+    console.log("add_user", data);
+    socket.to(data.roomid).emit("_user", data);
+  });
+
   socket.on("join_room", (data) => {
-    console.log(data.roomid);
+    console.log("room--", data.roomid);
     socket.join(data.roomid);
   });
 
@@ -55,9 +60,6 @@ io.on("connection", (socket) => {
     socket.to(data.roomid).emit("receive_message", data);
   });
 });
-
-
-
 
 //-----------------------------------------------------------------------------------
 Mongoose.connect(process.env.MONGODB_URL)

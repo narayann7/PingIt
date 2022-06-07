@@ -5,6 +5,7 @@ const getAccessTokenController = require("../controllers/get_access_token");
 const googleController = require("../controllers/login_with_google");
 const userController = require("./user_me_controller");
 const getSingleUserController = require("../controllers/get_users");
+const addFriendController = require("../controllers/add_friend");
 
 const controller = {
   //auth
@@ -20,5 +21,6 @@ const controller = {
   updateMe: userController.updateMe,
   getSingleUser: getSingleUserController.getSingleUser,
   getUsers: getSingleUserController.getUsers,
+  addFriend: addFriendController.AddFriend,
 };
 module.exports = controller;

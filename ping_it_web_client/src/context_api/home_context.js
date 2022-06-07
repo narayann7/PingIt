@@ -1,5 +1,5 @@
 import { createContext, useState, useContext } from "react";
-
+import { socket } from "../services/socket_services";
 export const HomeContext = createContext();
 
 export const useHomeContext = () => {
@@ -17,6 +17,11 @@ function HomeContextProvider(props) {
     "success",
     "error",
   ]);
+  const addUser = (userx) => {
+    var roomid = userx._id;
+    socket.emit("join_room", { roomid });
+    socket.emit("add_user", { user, roomid });
+  };
   const values = {
     user,
     setUser,
@@ -26,6 +31,7 @@ function HomeContextProvider(props) {
     setstateIndex,
     apiState,
     setapiState,
+    addUser,
   };
   return (
     <HomeContext.Provider value={values}>{props.children}</HomeContext.Provider>

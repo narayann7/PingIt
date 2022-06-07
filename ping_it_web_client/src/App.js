@@ -64,7 +64,7 @@ function App() {
                 </HomeContextProvider>
               }
             />
-            <Route path="test" element={<TestComp />} />
+            {/* <Route path="test" element={<TestComp />} /> */}
           </Route>
           <Route path="*" element={<Error />} />
         </Route>

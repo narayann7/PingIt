@@ -59,7 +59,7 @@ class UserService {
       var url = Urls.serverGetUserUrl + "?name=" + searchText;
       result = await api.get(url, config);
       if (result.status === 200) {
-        await timeout(2000);
+        await timeout(1000);
           return result.data;
       }
     } catch (error) {
