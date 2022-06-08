@@ -25,11 +25,11 @@ function HomeContextProvider(props) {
     "success",
     "error",
   ]);
-  const addUser = (userx) => {
-    var roomid = userx._id;
-    socket.emit("join_room", { roomid });
-    socket.emit("add_user", { user, roomid });
-  };
+  // const addUser = (userx) => {
+  //   var roomid = userx._id;
+  //   socket.emit("join_room", { roomid });
+  //   socket.emit("add_user", { user, roomid });
+  // };
   const values = {
     user,
     setUser,
@@ -39,7 +39,7 @@ function HomeContextProvider(props) {
     setstateIndex,
     apiState,
     setapiState,
-    addUser,
+    // addUser,
     userFriends,
     addFriend,
     setuserFriends,

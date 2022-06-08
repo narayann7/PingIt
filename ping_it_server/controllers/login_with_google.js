@@ -5,10 +5,16 @@ const ErrorHandlerClass = require("../services/error_handler_class");
 const JwtService = require("../services/jwt_service");
 const bcrypt = require("bcrypt");
 const common = require("./common");
+const UserFriends = require("../models/user_friend_list");
 require("dotenv").config();
 function sendData(userDetails, res) {
   const result = common.setUserInDb(userDetails);
-  const { accessToken, refreshToken } = result;
+  const { accessToken, refreshToken, id } = result;
+  var userFriend = new UserFriends({
+    userId: id,
+  });
+
+  userFriend.save((err, result) => {});
 
   return {
     accessToken,

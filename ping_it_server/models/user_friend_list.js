@@ -4,7 +4,7 @@ const Schema = Mongoose.Schema;
 
 const userFriendListSchema = new Schema(
   {
-    userId: { type: String, require: true },
+    userId: { type: String, require: true,unique: true },
     friends: [
       {
         friendId: { type: String, require: true },

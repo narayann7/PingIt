@@ -3,15 +3,26 @@ import React from "react";
 import { RiUser3Line } from "react-icons/ri";
 import { TiUserAddOutline } from "react-icons/ti";
 import common_styles from "../common_styles";
+import {BsMessenger} from "react-icons/bs";
 import { useHomeContext } from "../../context_api/home_context";
+import UserService from "../../services/user";
 const Text = common_styles.Text;
 
+
 function UserCard({ user, type }) {
-  const { addUser } = useHomeContext();
+  // const {  } = useHomeContext();
+  const addUser = async () => {
+    var result = await UserService.addFriend({
+      friendId: user._id,
+      friendName: user.username,
+      friendDisplayPictureUrl: user.displayPictureUrl,
+      friendEmail: user.email,
+    });
+  };
   return (
     <Card
       style={{
-        marginBottom: "12px",
+        marginTop: "12px",
         width: "25vw",
         height: "10vh",
         borderRadius: "10px",
@@ -24,10 +35,18 @@ function UserCard({ user, type }) {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
+        <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+        >
         <Avatar
           style={{
             backgroundColor: user.displayPictureUrl ? "#1a1a2b" : "#fff",
@@ -41,6 +60,7 @@ function UserCard({ user, type }) {
             <RiUser3Line color="#1a1a2b" />
           )}
         </Avatar>
+          
         <div
           style={{
             display: "flex",
@@ -53,9 +73,10 @@ function UserCard({ user, type }) {
           <Text>{user.username}</Text>
           <Text>{user.email}</Text>
         </div>
+        </div>
 
         {type === "add_friend" ? (
-          <div onClick={() => addUser(user)}>
+          <div onClick={() => addUser()}>
             <Avatar
               style={{
                 backgroundColor: "#030e21",
@@ -75,7 +96,7 @@ function UserCard({ user, type }) {
               }}
               className="add_friend"
             >
-              <TiUserAddOutline color="#d8a01f" />
+              <BsMessenger color="#fff" />
             </Avatar>
           </div>
         )}

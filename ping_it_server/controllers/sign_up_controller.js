@@ -4,6 +4,7 @@ const JwtService = require("../services/jwt_service");
 const bcrypt = require("bcrypt");
 const common = require("./common");
 const User = require("../models/user_model");
+const UserFriends = require("../models/user_friend_list");
 
 const controller = {
   signUp: async (req, res, next) => {
@@ -36,7 +37,14 @@ const controller = {
 
       const result = common.setUserInDb(userDetails);
 
-      const { accessToken, refreshToken } = result;
+      const { accessToken, refreshToken, id } = result;
+      var userFriend = new UserFriends({
+        userId: id,
+      });
+
+      userFriend.save((err, result) => {
+        res.send(result);
+      });
 
       res.status(200).json({
         accessToken,

@@ -41,6 +41,23 @@ class UserService {
     localStorage.removeItem("user_me");
   }
 
+  static async getConfig() {
+    var refreshToken = Auth.getRefreshToken();
+
+    var result = await Auth.getAccessToken(refreshToken);
+    if (result instanceof ErrorHandler) {
+      return result;
+    }
+    var accessToken = result.accessToken;
+    let config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        refreshtoken: refreshToken,
+      },
+    };
+    return config;
+  }
+
   static async searchUser(searchText) {
     try {
       var refreshToken = Auth.getRefreshToken();
@@ -69,6 +86,25 @@ class UserService {
       });
     }
   }
+  static async addFriend(friend) {
+    try {
+      var config = await this.getConfig();
+      if (config instanceof ErrorHandler) {
+        return config;
+      }
+      var result = await api.post(Urls.serverAddFriendUrl, friend, config);
+      if (result.status === 200) {
+        console.log(result.data);
+
+        return result.data;
+      }
+    } catch (error) {
+      return new ErrorHandler({
+        message: error.response.data,
+        statusCode: error.response.status,
+      });
+    }
+  }
   static async getFriends() {
     try {
       var refreshToken = Auth.getRefreshToken();
@@ -86,7 +122,8 @@ class UserService {
       };
       result = await api.get(Urls.serverGetFriendsUrl, config);
       if (result.status === 200) {
-        return result.data;
+
+        return result.data.friends;
       }
     } catch (error) {
       return new ErrorHandler({

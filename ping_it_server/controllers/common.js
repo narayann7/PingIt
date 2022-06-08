@@ -3,6 +3,7 @@ const ErrorHandlerClass = require("../services/error_handler_class");
 const JwtService = require("../services/jwt_service");
 const bcrypt = require("bcrypt");
 const User = require("../models/user_model");
+const UserFriends = require("../models/user_friend_list");
 
 const common = {
   setUserInDb: function (result) {
@@ -20,16 +21,33 @@ const common = {
           email: result.email,
         },
       });
+      let id=result._id
 
       return {
         accessToken,
         refreshToken,
+        id
       };
     } catch (error) {
       return ErrorHandlerClass.custom(error, 400);
     }
   },
 
+  async addFriendDb(userId, friend) {
+    try {
+      UserFriends.findOneAndUpdate(
+        {
+          userId: userId,
+        },
+        { $push: { friends: friend } },
+        (error, success) => {
+          return success;
+        }
+      );
+    } catch (error) {
+      return ErrorHandlerClass.custom(error, 400);
+    }
+  },
   removeDataFromUser: function (user) {
     user.password = undefined;
     user.createdAt = undefined;

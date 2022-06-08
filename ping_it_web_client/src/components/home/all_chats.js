@@ -11,7 +11,9 @@ import startChat from "../../assets/images/chat.png";
 const CenterCard = common_styles.CenterCard;
 
 function AllChats() {
-  const { user, addFriend, userFriends, setuserFriends } = useHomeContext();
+  const { user } = useHomeContext();
+  const [userFriends, setuserFriends] = useState([]);
+
   const [stateIndex, setstateIndex] = useState(0);
   const [apiState, setapiState] = useState([
     "initial",
@@ -31,29 +33,31 @@ function AllChats() {
   // }, [user._id]);
 
   useEffect(() => {
-    
-    // setstateIndex(1);
-    // UserService.getFriends()
-    //   .then((res) => {
-    //     res.friends.map((friend) => {
-    //       var userx = {
-    //         username: friend.name,
-    //         email: friend.email,
-    //         displayPictureUrl: friend.displayPictureUrl,
-    //       };
-    //       addFriend(userx);
-    //     });
-    //     // setstateIndex(2);
-    //   })
-    //   .catch((err) => {
-    //     setstateIndex(3);
-    //   });
-    // console.log(userFriends);
-  }, [addFriend, userFriends]);
+    setstateIndex(1);
+    UserService.getFriends()
+      .then((result) => {
+        result.map((friend) => {
+          console.log(friend);
+          var userx = {
+            _id: friend.friendId,
+            username: friend.friendName,
+            displayPictureUrl: friend.friendDisplayPictureUrl,
+            email: friend.friendEmail,
+          };
+          let temp = userFriends;
+          temp.push(userx);
+          setuserFriends(temp);
+          setstateIndex(2);
+        });
+      })
+      .catch((error) => {
+        setstateIndex(3);
+        console.log(error);
+      });
+  }, [userFriends]);
 
   const testOnclick = async () => {
-    var result = await UserService.getFriends();
-    console.log(result.friends);
+    console.log(userFriends);
   };
   const renderSwitch = (param) => {
     switch (param) {
@@ -94,6 +98,8 @@ function AllChats() {
       }}
     >
       {renderSwitch(apiState[stateIndex])}
+
+      {/* <Button onClick={testOnclick}>THIS</Button> */}
     </CenterCard>
   );
 }
