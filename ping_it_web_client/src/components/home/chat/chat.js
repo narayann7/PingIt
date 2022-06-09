@@ -26,16 +26,14 @@ function sortString(str) {
 }
 
 function Chat() {
-  const { currentRoomId, setcurrentRoomId, currentChat } = useHomeContext();
+  const { setcurrentRoomId, currentChat } = useHomeContext();
 
   useEffect(() => {
     if (currentChat) {
       var roomid = currentChat?._id;
       var roomid2 = UserService.getMeFromLocalStorage()?.user._id;
       roomid = roomid + roomid2;
-      // roomid.sort((a, b) => a.firstname.localeCompare(b.firstname));
       roomid = sortString(roomid);
-
       setcurrentRoomId(roomid);
       socket.emit("join_room", { roomid });
     }

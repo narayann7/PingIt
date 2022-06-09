@@ -9,7 +9,7 @@ import UserService from "../../services/user";
 const Text = common_styles.Text;
 
 function UserCard({ user, type }) {
-  const { setcurrentChat } = useHomeContext();
+  const { setcurrentChat, setMessages } = useHomeContext();
   const addUser = async () => {
     var result = await UserService.addFriend({
       friendId: user._id,
@@ -21,6 +21,7 @@ function UserCard({ user, type }) {
   const setCurrentChat = () => {
     // setcurrentChat(null);
     setcurrentChat(user);
+    setMessages([]);
   };
   return (
     <Card

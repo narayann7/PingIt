@@ -11,7 +11,7 @@ import userCardSkeletons from "../home/add_friend";
 const CenterCard = common_styles.CenterCard;
 
 function AllChats() {
-  const { user } = useHomeContext();
+  const { user, setcurrentChat } = useHomeContext();
   const [userFriends, setuserFriends] = useState([]);
 
   const [stateIndex, setstateIndex] = useState(0);
@@ -34,8 +34,11 @@ function AllChats() {
 
   useEffect(() => {
     setstateIndex(1);
+
     UserService.getFriends()
       .then((result) => {
+        let temp;
+        setcurrentChat([]);
         result.map((friend) => {
           var userx = {
             _id: friend.friendId,
@@ -45,22 +48,18 @@ function AllChats() {
           };
           console.log(userx);
 
-          let temp = userFriends;
+          temp = userFriends;
           temp.push(userx);
-
-          setuserFriends(temp);
-          setstateIndex(2);
         });
+        setuserFriends(temp);
+        setstateIndex(2);
       })
       .catch((error) => {
-        setstateIndex(3);
+        // setstateIndex(3);
         console.log(error);
       });
-  }, [userFriends]);
+  }, [setcurrentChat, userFriends]);
 
-  const testOnclick = async () => {
-    console.log(userFriends);
-  };
   const renderSwitch = (param) => {
     switch (param) {
       case "initial":
@@ -73,10 +72,14 @@ function AllChats() {
             <UserCardSkeleton />
             <UserCardSkeleton />
             <UserCardSkeleton />
+            <UserCardSkeleton />
           </>
         );
+
       case "success":
-        return userFriends.map((user, index) => (
+        var length = userFriends.length;
+        var tempUserFriends = userFriends.slice(0, length / 2);
+        return tempUserFriends.map((user, index) => (
           <UserCard key={index} user={user} type="friend" />
         ));
       case "error":

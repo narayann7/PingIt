@@ -25,7 +25,9 @@ function ChatCenter() {
   }, [messages, setMessages]);
 
   return (
-    <CenterCard style={cardSytle}>
+    <CenterCard 
+    
+    style={cardSytle}>
       {messages.map((message, index) => {
         return <Message key={index} message={message} />;
       })}
@@ -37,6 +39,9 @@ export default ChatCenter;
 const cardSytle = {
   width: "60vw",
   height: "70vh",
+  overflowY: "scroll",
+  
+  scrollbarWidth: "thin",
   borderRadius: "0px",
   minWidth: "400px",
   minHeight: "400px",

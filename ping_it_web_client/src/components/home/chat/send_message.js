@@ -10,7 +10,7 @@ const MyTextField = common_styles.MyTextField;
 
 function SendMessage() {
   const [message, setmessage] = useState("");
-  const { currentRoomId,messages, setMessages } = useHomeContext();
+  const { currentRoomId, messages, setMessages } = useHomeContext();
 
   const handleChangeMesage = (e) => {
     e.preventDefault();
@@ -48,6 +48,7 @@ function SendMessage() {
               roomid: currentRoomId,
             });
             setMessages(tempMessages);
+            setmessage('')
           }}
         >
           <Avatar

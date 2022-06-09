@@ -12,10 +12,8 @@ function Profile() {
         marginTop: "30px",
         minWidth: "250px",
         minHeight: "60px",
-        backgroundColor: "#000000",
       }}
     >
-      <Typography> Profile;</Typography>
     </CenterCard>
   );
 }
