@@ -2,7 +2,7 @@ import { React, useEffect, useState } from "react";
 import Auth from "../../services/auth";
 import common_styles from "../common_styles";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Chat from "./chat";
+import Chat from "./chat/chat";
 import AllChats from "./all_chats";
 import AppBar from "./app_bar";
 import HomeContextProvider from "./../../context_api/home_context";
