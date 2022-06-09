@@ -4,9 +4,9 @@ import { socket } from "../../services/socket_services";
 import { useHomeContext } from "../../context_api/home_context";
 import { Button, CardMedia } from "@mui/material";
 import UserService from "../../services/user";
-import UserCard from "../home/user_card";
-import { UserCardSkeleton } from "../home/user_card";
+import UserCard, { UserCardSkeleton } from "../home/user_card";
 import startChat from "../../assets/images/chat.png";
+import userCardSkeletons from "../home/add_friend";
 
 const CenterCard = common_styles.CenterCard;
 
@@ -37,15 +37,17 @@ function AllChats() {
     UserService.getFriends()
       .then((result) => {
         result.map((friend) => {
-          console.log(friend);
           var userx = {
             _id: friend.friendId,
             username: friend.friendName,
             displayPictureUrl: friend.friendDisplayPictureUrl,
             email: friend.friendEmail,
           };
+          console.log(userx);
+
           let temp = userFriends;
           temp.push(userx);
+
           setuserFriends(temp);
           setstateIndex(2);
         });
@@ -64,7 +66,15 @@ function AllChats() {
       case "initial":
         return initalImage;
       case "loading":
-        return UserCardSkeleton;
+        return (
+          <>
+            <UserCardSkeleton />
+            <UserCardSkeleton />
+            <UserCardSkeleton />
+            <UserCardSkeleton />
+            <UserCardSkeleton />
+          </>
+        );
       case "success":
         return userFriends.map((user, index) => (
           <UserCard key={index} user={user} type="friend" />
@@ -95,6 +105,8 @@ function AllChats() {
         marginTop: "30px",
         minWidth: "250px",
         minHeight: "60px",
+        overflowY: "scroll",
+        scrollbarWidth: "thin",
       }}
     >
       {renderSwitch(apiState[stateIndex])}

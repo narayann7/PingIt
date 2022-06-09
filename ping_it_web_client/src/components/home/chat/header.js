@@ -3,12 +3,14 @@ import common_styles from "../../common_styles";
 import { CardMedia } from "@mui/material";
 import { RiUser3Line } from "react-icons/ri";
 import { Avatar } from "@mui/material";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { RiCloseLine } from "react-icons/ri";
+import { useHomeContext } from "../../../context_api/home_context";
+
 const CenterCard = common_styles.CenterCard;
 const Text = common_styles.Text;
 
-function Header() {
-  let displayPictureUrl = null;
+function Header({ displayPictureUrl, name }) {
+  const { setcurrentChat, currentChat } = useHomeContext();
   return (
     <CenterCard style={cardStyle}>
       <div
@@ -25,7 +27,6 @@ function Header() {
             color: "#fff",
           }}
           className="profile"
-          // onClick={profile}
           alt="user"
         >
           {displayPictureUrl ? (
@@ -34,9 +35,16 @@ function Header() {
             <RiUser3Line color="#d8a01f" />
           )}
         </Avatar>
-        <Text paddingLeft="25px">narayan</Text>
+        <Text paddingLeft="25px">{name}</Text>
       </div>
-      <BsThreeDotsVertical />
+      <div
+        onClick={() => {
+          setcurrentChat(null);
+          // console.log(currentChat);
+        }}
+      >
+        <RiCloseLine />
+      </div>
     </CenterCard>
   );
 }
