@@ -6,12 +6,11 @@ import { Button, CardMedia } from "@mui/material";
 import UserService from "../../services/user";
 import UserCard, { UserCardSkeleton } from "../home/user_card";
 import startChat from "../../assets/images/chat.png";
-import userCardSkeletons from "../home/add_friend";
 
 const CenterCard = common_styles.CenterCard;
 
 function AllChats() {
-  const { user, setcurrentChat } = useHomeContext();
+  const { setcurrentChat } = useHomeContext();
   const [userFriends, setuserFriends] = useState([]);
 
   const [stateIndex, setstateIndex] = useState(0);
@@ -39,18 +38,24 @@ function AllChats() {
       .then((result) => {
         let temp;
         setcurrentChat([]);
-        result.map((friend) => {
-          var userx = {
-            _id: friend.friendId,
-            username: friend.friendName,
-            displayPictureUrl: friend.friendDisplayPictureUrl,
-            email: friend.friendEmail,
-          };
-          console.log(userx);
 
-          temp = userFriends;
-          temp.push(userx);
-        });
+        console.log(result);
+
+        if (result.length !== 0) {
+          result.map((friend) => {
+            var userx = {
+              _id: friend.friendId,
+              username: friend.friendName,
+              displayPictureUrl: friend.friendDisplayPictureUrl,
+              email: friend.friendEmail,
+            };
+            console.log(userx);
+
+            temp = userFriends;
+            temp.push(userx);
+          });
+        }
+
         setuserFriends(temp);
         setstateIndex(2);
       })

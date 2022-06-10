@@ -1,0 +1,5 @@
+2 times 
+get friend 
+  setcurrentChat([]); in useeffect
+
+  currentChat || currentChat.length===0 ? ( in chats

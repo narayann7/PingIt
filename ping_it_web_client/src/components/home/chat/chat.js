@@ -40,7 +40,7 @@ function Chat() {
   }, [currentChat, setcurrentRoomId]);
   return (
     <CenterCard style={cardStyle}>
-      {!currentChat ? (
+      {!currentChat || currentChat.length===0 ? (
         <div
           style={{
             display: "flex",

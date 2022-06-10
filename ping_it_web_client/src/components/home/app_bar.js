@@ -8,6 +8,7 @@ import common_styles from "../common_styles";
 import UserService from "../../services/user";
 import Auth from "../../services/auth";
 import { useHomeContext } from "../../context_api/home_context";
+import Urls from "../../services/urls";
 const CenterCard = common_styles.CenterCard;
 const Text = common_styles.Text;
 
@@ -23,7 +24,7 @@ function AppBar() {
   const logout = () => {
     Auth.deleteRefreshToken();
     UserService.deleteMeLocalStorage();
-    navigate("/login", { replace: true });
+    window.open(Urls.clientBaseUrl, "_self");
   };
   const allChat = () => {
     setcurrentTab(0);

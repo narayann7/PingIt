@@ -16,14 +16,17 @@ const getAccessTokenController = {
         token: req.body.refreshtoken,
       });
       if (!result) return next(ErrorHandlerClass.invaildAccessToken);
+      var id = result._id.valueOf();
       const { _id, email } = result;
-      User.findOne({ _id: _id })
+
+      User.findOne({ _id: id })
         .then((result) => {
-          const { _id, email, password } = result;
+          const { email, password } = result;
+          let id = result._id.valueOf();
           const secret = commonFunctions.base64encode(password);
           //token
           accessToken = JwtService.sign({
-            payload: { _id: _id, email: email },
+            payload: { _id: id, email: email },
             secret: secret,
             expiry: "1y",
           });
