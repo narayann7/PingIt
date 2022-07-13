@@ -30,7 +30,11 @@ function Header({ displayPictureUrl, name }) {
           alt="user"
         >
           {displayPictureUrl ? (
-            <CardMedia component="img" image={displayPictureUrl} />
+            <CardMedia
+              referrerPolicy="no-referrer"
+              component="img"
+              image={displayPictureUrl}
+            />
           ) : (
             <RiUser3Line color="#d8a01f" />
           )}

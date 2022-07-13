@@ -52,7 +52,11 @@ function AppBar() {
         alt="user"
       >
         {user.displayPictureUrl ? (
-          <CardMedia component="img" image={user.displayPictureUrl} />
+          <CardMedia
+            referrerPolicy="no-referrer"
+            component="img"
+            image={user.displayPictureUrl}
+          />
         ) : (
           <RiUser3Line color="#d8a01f" />
         )}

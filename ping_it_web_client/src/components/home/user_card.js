@@ -10,6 +10,9 @@ const Text = common_styles.Text;
 
 function UserCard({ user, type }) {
   const { setcurrentChat, setMessages } = useHomeContext();
+
+  console.log(user.displayPictureUrl);
+
   const addUser = async () => {
     var result = await UserService.addFriend({
       friendId: user._id,
@@ -59,7 +62,11 @@ function UserCard({ user, type }) {
             alt="user"
           >
             {user.displayPictureUrl ? (
-              <CardMedia component="img" image={user.displayPictureUrl} />
+              <CardMedia
+                referrerPolicy="no-referrer"
+                component="img"
+                image={user.displayPictureUrl}
+              />
             ) : (
               <RiUser3Line color="#1a1a2b" />
             )}
