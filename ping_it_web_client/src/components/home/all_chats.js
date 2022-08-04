@@ -36,7 +36,7 @@ function AllChats() {
 
     UserService.getFriends()
       .then((result) => {
-        let temp;
+        let temp=[];
         setcurrentChat([]);
 
         console.log(result);
@@ -54,10 +54,15 @@ function AllChats() {
             temp = userFriends;
             temp.push(userx);
           });
+          setuserFriends(temp);
+          setstateIndex(2);
+        }
+        else{
+          setstateIndex(0);
+
         }
 
-        setuserFriends(temp);
-        setstateIndex(2);
+      
       })
       .catch((error) => {
         // setstateIndex(3);

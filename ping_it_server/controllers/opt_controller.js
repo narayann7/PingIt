@@ -31,7 +31,7 @@ const controller = {
     //created jwt token for opt with 30s limit
     otp_token = JwtService.sign({
       payload: { otp: otp },
-      expiry: 10,
+      expiry: 30,
       secret: commonFunctions.base64encode(email),
     });
 

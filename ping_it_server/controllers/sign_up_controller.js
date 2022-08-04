@@ -43,7 +43,7 @@ const controller = {
       });
 
       userFriend.save((err, result) => {
-        res.send(result);
+       
       });
 
       res.status(200).json({
